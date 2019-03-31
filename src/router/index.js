@@ -127,6 +127,24 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/statistics',
+    component: Layout,
+    redirect: '/statistics/registerView',
+    name: 'Statistics',
+    meta: {
+      title: '统计',
+      icon: 'fas fa-database'
+    },
+    children: [
+      {
+        path: 'registerView',
+        component: () => import('@/views/statistics/registerView'),
+        name: 'StatisticsRegisterView',
+        meta: { title: '注册页浏览', roles: ['admin'] }
+      }
+    ]
+  },
   componentsRouter,
   chartsRouter,
   tableRouter,

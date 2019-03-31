@@ -1,8 +1,17 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-form ref="searchForm" :model="searchForm" label-position="right" label-width="100px">
+      <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
         <el-row :gutter="12">
+          <el-col :span="6">
+            <el-form-item prop="status" label="上架状态：">
+              <el-select v-model="searchForm.status" :style="{width: '100%'}" class="filter-item">
+                <el-option label="全部" value=""/>
+                <el-option :value="1" label="上架"/>
+                <el-option :value="2" label="下架"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="6">
             <el-form-item prop="channel_name" label="渠道名称：">
               <el-input v-model="searchForm.channel_name"/>
@@ -66,15 +75,25 @@
           <span>{{ formatDateTime(scope.row.create_at) }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="单价">
+        <template slot-scope="scope">
+          <span>{{ scope.row.unit_price }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="扣量结果">
         <template slot-scope="scope">
           <span>{{ scope.row.register_count_c }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="状态">
+        <template slot-scope="scope">
+          <el-tag :type="formatStatusType(scope.row.status)">{{ formatStatus(scope.row.status) }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="300">
         <template slot-scope="scope">
+          <el-button size="mini" @click="handleChangeStatus(scope.row)">{{ scope.row.status === 1?'下架':'上架' }}</el-button>
           <el-button type="primary" size="mini" @click="handleCreateUrl(scope.row)">生成链接</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -84,10 +103,10 @@
         <el-form-item prop="channel_name" label="渠道名称">
           <el-input v-model="dialogForm.channel_name"/>
         </el-form-item>
-        <el-form-item prop="channel_name" label="登录名">
+        <el-form-item prop="name" label="登录名">
           <el-input v-model="dialogForm.name"/>
         </el-form-item>
-        <el-form-item prop="channel_name" label="登录密码">
+        <el-form-item prop="password" label="登录密码">
           <el-input v-model="dialogForm.password"/>
         </el-form-item>
       </el-form>
@@ -102,7 +121,8 @@
 <script>
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
-  channel_name: ''
+  channel_name: '',
+  status: ''
 }
 const dialogFormBase = {
   channel_name: '',
@@ -186,6 +206,22 @@ export default {
           type: 'info',
           message: '已取消删除'
         })
+      })
+    },
+    handleChangeStatus(row) {
+      let newStatus = 1
+      if (row.status === 1) {
+        newStatus = 2
+      }
+      this.$http.post('channel/updateChannelStatus', {
+        channel_id: row._id,
+        status: newStatus
+      }).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '修改成功!'
+        })
+        this.initPage()
       })
     },
     closeForm() {

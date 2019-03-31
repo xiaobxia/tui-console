@@ -52,6 +52,26 @@ Vue.prototype.formatRoles = function(roles) {
   }
 }
 
+Vue.prototype.formatStatus = function(status) {
+  if (status === 1) {
+    return '已上架'
+  } else if (status === 2) {
+    return '已下架'
+  } else {
+    return '未知'
+  }
+}
+
+Vue.prototype.formatStatusType = function(status) {
+  if (status === 1) {
+    return 'success'
+  } else if (status === 2) {
+    return 'info'
+  } else {
+    return 'danger'
+  }
+}
+
 new Vue({
   el: '#app',
   router,
