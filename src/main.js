@@ -72,6 +72,16 @@ Vue.prototype.formatStatusType = function(status) {
   }
 }
 
+Vue.prototype.formatShiFou = function(status) {
+  if (status === true) {
+    return '是'
+  } else if (status === false) {
+    return '否'
+  } else {
+    return '-'
+  }
+}
+
 new Vue({
   el: '#app',
   router,

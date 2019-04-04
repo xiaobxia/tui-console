@@ -120,6 +120,13 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'edit/:id',
+        component: () => import('@/views/product/edit'),
+        name: 'EditProduct',
+        meta: { title: '编辑产品', noCache: true, roles: ['admin'] },
+        hidden: true
+      },
+      {
         path: 'list',
         component: () => import('@/views/product/list'),
         name: 'ProductList',
@@ -130,7 +137,7 @@ export const asyncRouterMap = [
   {
     path: '/statistics',
     component: Layout,
-    redirect: '/statistics/registerView',
+    redirect: '/statistics/viewLog',
     name: 'Statistics',
     meta: {
       title: '统计',
@@ -138,10 +145,16 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: 'registerView',
-        component: () => import('@/views/statistics/registerView'),
-        name: 'StatisticsRegisterView',
-        meta: { title: '注册页浏览', roles: ['admin'] }
+        path: 'viewLog',
+        component: () => import('@/views/statistics/viewLog'),
+        name: 'StatisticsViewLog',
+        meta: { title: '页面浏览', roles: ['admin'] }
+      },
+      {
+        path: 'userClick',
+        component: () => import('@/views/statistics/userClick'),
+        name: 'StatisticsUserClick',
+        meta: { title: '产品点击', roles: ['admin'] }
       }
     ]
   },

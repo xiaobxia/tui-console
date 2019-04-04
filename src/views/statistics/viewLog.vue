@@ -4,6 +4,16 @@
       <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
         <el-row :gutter="12">
           <el-col :span="6">
+            <el-form-item prop="page" label="页面：">
+              <el-select v-model="searchForm.page" :style="{width: '100%'}" class="filter-item">
+                <el-option label="全部" value=""/>
+                <el-option value="register" label="注册页"/>
+                <el-option value="home" label="主页"/>
+                <el-option value="loan" label="借款"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
             <el-form-item prop="device_type" label="渠道名称：">
               <el-select v-model="searchForm.source_channel_id" :style="{width: '100%'}" class="filter-item">
                 <el-option v-for="(item, index) in channelList" :label="item.channel_name" :value="item._id" :key="index"/>
@@ -54,6 +64,11 @@
       </el-form>
     </div>
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+      <el-table-column align="center" label="页面">
+        <template slot-scope="scope">
+          <span>{{ formatPage(scope.row.page) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="渠道名">
         <template slot-scope="scope">
           <span>{{ scope.row.source_channel_name || '-' }}</span>
@@ -88,13 +103,14 @@
 import moment from 'moment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
+  page: '',
   source_channel_id: '',
   device_id: '',
   device_type: '',
   time: ['', '']
 }
 export default {
-  name: 'StatisticsRegisterView',
+  name: 'StatisticsViewLog',
   components: { Pagination },
   data() {
     return {
@@ -136,10 +152,6 @@ export default {
           {
             channel_name: '全部',
             _id: ''
-          },
-          {
-            channel_name: '系统',
-            _id: 'sys'
           }
         ]
         this.channelList = list.concat(response.data.list)
@@ -150,7 +162,7 @@ export default {
     },
     queryList() {
       this.listLoading = true
-      this.$http.get('log/getRegisterViewLog', {
+      this.$http.get('log/getViewLog', {
         ...this.formatSearch(this.searchForm),
         ...this.listQuery
       }).then(response => {
@@ -172,6 +184,17 @@ export default {
     },
     handleResetSearch() {
       this.searchForm = Object.assign({}, searchFormBase)
+    },
+    formatPage(page) {
+      if (page === 'register') {
+        return '注册页'
+      } else if (page === 'home') {
+        return '首页'
+      } else if (page === 'loan') {
+        return '借款'
+      } else {
+        return '-'
+      }
     }
   }
 }

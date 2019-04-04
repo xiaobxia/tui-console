@@ -29,11 +29,9 @@
           <span>{{ formatDateTime(scope.row.create_at) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="操作" width="100">
         <template slot-scope="scope">
-          <router-link :to="'/example/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
-          </router-link>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -142,6 +140,36 @@ export default {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    verifyAfterDelete() {
+      if (this.currentSize < 2) {
+        if (this.paging.pageNo > 1) {
+          this.paging.pageNo = this.paging.pageNo - 1
+        }
+      }
+    },
+    handleDelete(row) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post('admin/deleteAdminUser', {
+          user_id: row._id
+        }).then((res) => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.verifyAfterDelete()
+          this.initPage()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     }
   }

@@ -18,6 +18,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
+            <el-button class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
+            </el-button>
             <el-button :loading="searchLoading" class="filter-item" icon="el-icon-search" type="primary" @click="handleSearch">搜索</el-button>
             <el-button class="filter-item" icon="el-icon-plus" type="primary" @click="handleCreate">新增</el-button>
           </el-col>
@@ -25,6 +27,100 @@
       </el-form>
     </div>
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+      <el-table-column type="expand" label="展开" width="50">
+        <template slot-scope="props">
+          <el-form>
+            <el-row :gutter="12">
+              <el-col :span="6">
+                <el-form-item label="历史注册数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_register_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="今日注册数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_register_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="历史设备数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_device_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="今日新增设备数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_device_count }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="12">
+              <el-col :span="6">
+                <el-form-item label="历史验证码发送次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_verification_code_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="今日验证码发送次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_verification_code_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="历史链接点击：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_click_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="今日链接点击：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_click_count }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="12">
+              <el-col :span="6">
+                <el-form-item label="历史浏览注册次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_register_view_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="今日浏览注册次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_register_view_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="历史浏览首页次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_home_view_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="今日浏览首页次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_home_view_count }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="12">
+              <el-col :span="6">
+                <el-form-item label="历史浏览借款次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_loan_view_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="今日浏览借款次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_loan_view_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="历史扣量结果：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_today_register_count_c }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="今日扣量结果：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_register_count_c }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="渠道名">
         <template slot-scope="scope">
           <span>{{ scope.row.channel_name || '-' }}</span>
@@ -40,36 +136,6 @@
           <span>{{ (scope.row.user&& scope.row.user.password_raw) || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="浏览注册次数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.register_view_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="验证码发送次数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.verification_code_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="注册数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.register_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="设备数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.device_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="浏览首页次数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.home_view_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="点击链接次数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.click_count }}</span>
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="添加时间" width="200">
         <template slot-scope="scope">
           <span>{{ formatDateTime(scope.row.create_at) }}</span>
@@ -78,11 +144,6 @@
       <el-table-column align="center" label="单价">
         <template slot-scope="scope">
           <span>{{ scope.row.unit_price }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="扣量结果">
-        <template slot-scope="scope">
-          <span>{{ scope.row.register_count_c }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="状态">
@@ -181,6 +242,9 @@ export default {
     },
     handleSearch() {
       this.queryList()
+    },
+    handleResetSearch() {
+      this.searchForm = Object.assign({}, searchFormBase)
     },
     handleCancel() {
       this.closeForm()
