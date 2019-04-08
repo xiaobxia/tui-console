@@ -153,6 +153,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="300">
         <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleEdit2(scope.row)">修改扣量结果</el-button>
           <el-button size="mini" @click="handleChangeStatus(scope.row)">{{ scope.row.status === 1?'下架':'上架' }}</el-button>
           <el-button type="primary" size="mini" @click="handleCreateUrl(scope.row)">生成链接</el-button>
         </template>
@@ -176,6 +177,20 @@
         <el-button :loading="loading" type="primary" @click="handleConfirm">确定</el-button>
       </span>
     </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisible2" title="修改今日扣量结果" @closed="handleCancel2">
+      <el-form ref="dialogForm2" :model="dialogForm2" :rules="dialogFormRules2" label-position="right" label-width="120px">
+        <el-form-item prop="unit_price" label="单价">
+          <el-input v-model="dialogForm2.unit_price"/>
+        </el-form-item>
+        <el-form-item prop="today_register_count_c" label="今日扣量结果">
+          <el-input v-model="dialogForm2.today_register_count_c"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel2">取消</el-button>
+        <el-button :loading="loading" type="primary" @click="handleConfirm2">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -190,6 +205,13 @@ const dialogFormBase = {
   name: '',
   password: ''
 }
+
+const dialogFormBase2 = {
+  channel_id: '',
+  unit_price: 0,
+  today_register_count_c: 0
+}
+
 export default {
   name: 'ChannelList',
   components: { Pagination },
@@ -207,6 +229,12 @@ export default {
         channel_name: [{ required: true, message: '请输入渠道名称', trigger: 'blur' }],
         name: [{ required: true, message: '请输入登录名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入登录密码', trigger: 'blur' }]
+      },
+      dialogFormVisible2: false,
+      dialogForm2: Object.assign({}, dialogFormBase2),
+      dialogFormRules2: {
+        unit_price: [{ required: true, message: '请输入单价', trigger: 'blur' }],
+        today_register_count_c: [{ required: true, message: '请输入结果', trigger: 'blur' }]
       },
       listQuery: {
         current: 1,
@@ -248,6 +276,9 @@ export default {
     },
     handleCancel() {
       this.closeForm()
+    },
+    handleCancel2() {
+      this.closeForm2()
     },
     handleDelete(row) {
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
@@ -292,15 +323,17 @@ export default {
       this.dialogFormVisible = false
       this.dialogForm = Object.assign({}, dialogFormBase)
     },
-    handleEdit(row) {
-      this.dialogFormVisible = true
-      this.dialogFormStatus = 'edit'
-      this.dialogForm = Object.assign({}, row)
-      this.dialogForm.routeType = parseInt(this.dialogForm.routeType || '1')
+    closeForm2() {
+      this.dialogFormVisible2 = false
+      this.dialogForm2 = Object.assign({}, dialogFormBase2)
+    },
+    handleEdit2(row) {
+      this.dialogFormVisible2 = true
+      this.dialogForm2 = Object.assign({}, row)
+      this.dialogForm2.channel_id = row._id
     },
     handleCreate() {
       this.dialogFormVisible = true
-      this.dialogFormStatus = 'add'
     },
     verifyAfterDelete() {
       if (this.currentSize < 2) {
@@ -326,6 +359,28 @@ export default {
           ).then(() => {
             this.loading = false
             this.closeForm()
+            this.initPage()
+          }).catch(() => {
+            this.loading = false
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    handleConfirm2() {
+      this.$refs.dialogForm2.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$http.post(
+            'channel/updateChannelRegisterC',
+            {
+              ...this.dialogForm2
+            }
+          ).then(() => {
+            this.loading = false
+            this.closeForm2()
             this.initPage()
           }).catch(() => {
             this.loading = false

@@ -30,11 +30,6 @@
             <el-input v-model="dialogForm.name"/>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item prop="unit_price" label="单价">
-            <el-input v-model="dialogForm.unit_price"/>
-          </el-form-item>
-        </el-col>
         <el-col :span="12">
           <el-form-item prop="url" label="链接">
             <el-input v-model="dialogForm.url"/>
@@ -66,8 +61,18 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="6">
+          <el-form-item prop="sortIndex" label="排序值">
+            <el-input v-model="dialogForm.sortIndex"/>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row :gutter="12">
+        <el-col :span="6">
+          <el-form-item prop="unit_price" label="单价">
+            <el-input v-model="dialogForm.unit_price"/>
+          </el-form-item>
+        </el-col>
         <el-col :span="6">
           <el-form-item prop="today_register_count" label="今日注册数">
             <el-input v-model="dialogForm.today_register_count"/>
@@ -116,6 +121,7 @@
           <el-form-item prop="term_unit" label="期限单位">
             <el-select v-model="dialogForm.term_unit" :style="{width: '100%'}" class="filter-item">
               <el-option value="日" label="日"/>
+              <el-option value="周" label="周"/>
               <el-option value="月" label="月"/>
               <el-option value="年" label="年"/>
             </el-select>
@@ -140,6 +146,13 @@
               <el-option value="小时" label="小时"/>
               <el-option value="日" label="日"/>
             </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="12">
+        <el-col :span="24">
+          <el-form-item prop="introduction" label="简介">
+            <el-input v-model="dialogForm.introduction"/>
           </el-form-item>
         </el-col>
       </el-row>

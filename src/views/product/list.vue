@@ -33,6 +33,11 @@
       </el-form>
     </div>
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+      <el-table-column align="center" label="排序值">
+        <template slot-scope="scope">
+          <span>{{ scope.row.sortIndex || 0 }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="名称">
         <template slot-scope="scope">
           <span>{{ scope.row.name || '-' }}</span>
@@ -82,6 +87,11 @@
       <el-table-column align="center" label="今日注册数">
         <template slot-scope="scope">
           <span>{{ scope.row.today_register_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="单价">
+        <template slot-scope="scope">
+          <span>{{ scope.row.unit_price }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
