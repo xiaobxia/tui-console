@@ -76,34 +76,34 @@
             </el-row>
             <el-row :gutter="12">
               <el-col :span="6">
-                <el-form-item label="历史浏览注册次数：" style="margin: 0">
+                <el-form-item label="历史浏览注册次数(PV)：" style="margin: 0">
                   <span class="value">  {{ props.row.history_register_view_count }}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="今日浏览注册次数：" style="margin: 0">
+                <el-form-item label="今日浏览注册次数(PV)：" style="margin: 0">
                   <span class="value">  {{ props.row.today_register_view_count }}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="历史浏览首页次数：" style="margin: 0">
+                <el-form-item label="历史浏览首页次数(PV)：" style="margin: 0">
                   <span class="value">  {{ props.row.history_home_view_count }}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="今日浏览首页次数：" style="margin: 0">
+                <el-form-item label="今日浏览首页次数(PV)：" style="margin: 0">
                   <span class="value">  {{ props.row.today_home_view_count }}</span>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="12">
               <el-col :span="6">
-                <el-form-item label="历史浏览借款次数：" style="margin: 0">
+                <el-form-item label="历史浏览借款次数(PV)：" style="margin: 0">
                   <span class="value">  {{ props.row.history_loan_view_count }}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="今日浏览借款次数：" style="margin: 0">
+                <el-form-item label="今日浏览借款次数(PV)：" style="margin: 0">
                   <span class="value">  {{ props.row.today_loan_view_count }}</span>
                 </el-form-item>
               </el-col>
@@ -144,6 +144,11 @@
       <el-table-column align="center" label="单价">
         <template slot-scope="scope">
           <span>{{ scope.row.unit_price }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="扣量基数">
+        <template slot-scope="scope">
+          <span>{{ scope.row.deduction_base }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="状态">

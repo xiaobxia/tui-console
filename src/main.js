@@ -72,6 +72,16 @@ Vue.prototype.formatStatusType = function(status) {
   }
 }
 
+Vue.prototype.formatIfContact = function(status) {
+  if (status === true) {
+    return 'success'
+  } else if (status === false) {
+    return 'info'
+  } else {
+    return 'danger'
+  }
+}
+
 Vue.prototype.formatShiFou = function(status) {
   if (status === true) {
     return '是'
