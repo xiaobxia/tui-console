@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="70px">
+      <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
         <el-row :gutter="12">
           <el-col :span="6">
             <el-form-item prop="if_contact" label="是否联系：">

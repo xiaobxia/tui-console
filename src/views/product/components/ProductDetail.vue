@@ -35,6 +35,11 @@
             <el-input v-model="dialogForm.url"/>
           </el-form-item>
         </el-col>
+        <el-col :span="6">
+          <el-form-item prop="introduction" label="简介">
+            <el-input v-model="dialogForm.introduction"/>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row :gutter="12">
         <el-col :span="6">
@@ -146,13 +151,6 @@
               <el-option value="小时" label="小时"/>
               <el-option value="日" label="日"/>
             </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="12">
-        <el-col :span="24">
-          <el-form-item prop="introduction" label="简介">
-            <el-input v-model="dialogForm.introduction"/>
           </el-form-item>
         </el-col>
       </el-row>

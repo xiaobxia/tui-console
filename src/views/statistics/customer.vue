@@ -62,6 +62,21 @@
           <span>{{ scope.row.verification_code }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="产品点击">
+        <template slot-scope="scope">
+          <span>{{ scope.row.click_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="活跃天数">
+        <template slot-scope="scope">
+          <span>{{ scope.row.brisk_count }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="上次活跃">
+        <template slot-scope="scope">
+          <span>{{ scope.row.last_brisk_day }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="激活状态">
         <template slot-scope="scope">
           <el-tag :type="formatStatusType(scope.row.status)">{{ scope.row.status === 1 ? '激活':'未激活' }}</el-tag>

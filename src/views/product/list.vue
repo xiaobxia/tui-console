@@ -122,6 +122,9 @@
         <el-form-item prop="unit_price" label="单价">
           <el-input v-model="dialogForm.unit_price"/>
         </el-form-item>
+        <el-form-item prop="introduction" label="简介">
+          <el-input v-model="dialogForm.introduction"/>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取消</el-button>
@@ -140,7 +143,8 @@ const searchFormBase = {
 const dialogFormBase = {
   name: '',
   url: '',
-  unit_price: ''
+  unit_price: '',
+  introduction: ''
 }
 export default {
   name: 'ProductList',
