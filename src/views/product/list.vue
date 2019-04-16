@@ -97,7 +97,7 @@
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="scope">
           <router-link :to="'/product/edit/'+scope.row._id">
-            <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑详情</el-button>
+            <el-button type="primary" size="mini">编辑详情</el-button>
           </router-link>
           <el-button size="mini" @click="handleChangeStatus(scope.row)">{{ scope.row.status === 1?'下架':'上架' }}
           </el-button>

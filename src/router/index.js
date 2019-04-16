@@ -98,6 +98,13 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'edit/:id',
+        component: () => import('@/views/channel/edit'),
+        name: 'EditChannel',
+        meta: { title: '编辑渠道', noCache: true, roles: { include: ['admin'] }},
+        hidden: true
+      },
+      {
         path: 'list',
         component: () => import('@/views/channel/list'),
         name: 'ChannelList',
@@ -147,18 +154,6 @@ export const asyncRouterMap = [
         component: () => import('@/views/statistics/customer'),
         name: 'StatisticsCustomer',
         meta: { title: '注册用户', roles: { include: ['admin'] }}
-      },
-      {
-        path: 'viewLog',
-        component: () => import('@/views/statistics/viewLog'),
-        name: 'StatisticsViewLog',
-        meta: { title: '页面浏览', roles: { include: ['admin'] }}
-      },
-      {
-        path: 'userClick',
-        component: () => import('@/views/statistics/userClick'),
-        name: 'StatisticsUserClick',
-        meta: { title: '产品点击', roles: { include: ['admin'] }}
       }
     ]
   },

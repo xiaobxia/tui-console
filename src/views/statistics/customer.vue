@@ -62,12 +62,17 @@
           <span>{{ scope.row.verification_code }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="页面浏览次数">
+        <template slot-scope="scope">
+          <span>{{ scope.row.view_count }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="产品点击">
         <template slot-scope="scope">
           <span>{{ scope.row.click_count }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="活跃天数">
+      <el-table-column align="center" label="活跃度">
         <template slot-scope="scope">
           <span>{{ scope.row.brisk_count }}</span>
         </template>

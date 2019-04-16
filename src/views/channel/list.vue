@@ -42,13 +42,13 @@
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="历史设备数：" style="margin: 0">
-                  <span class="value">  {{ props.row.history_device_count }}</span>
+                <el-form-item label="历史扣量结果：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_register_count_c }}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="今日新增设备数：" style="margin: 0">
-                  <span class="value">  {{ props.row.today_device_count }}</span>
+                <el-form-item label="今日扣量结果：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_register_count_c }}</span>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -74,64 +74,20 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="12">
-              <el-col :span="6">
-                <el-form-item label="历史浏览注册次数(PV)：" style="margin: 0">
-                  <span class="value">  {{ props.row.history_register_view_count }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="今日浏览注册次数(PV)：" style="margin: 0">
-                  <span class="value">  {{ props.row.today_register_view_count }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="历史浏览首页次数(PV)：" style="margin: 0">
-                  <span class="value">  {{ props.row.history_home_view_count }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="今日浏览首页次数(PV)：" style="margin: 0">
-                  <span class="value">  {{ props.row.today_home_view_count }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="12">
-              <el-col :span="6">
-                <el-form-item label="历史浏览借款次数(PV)：" style="margin: 0">
-                  <span class="value">  {{ props.row.history_loan_view_count }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="今日浏览借款次数(PV)：" style="margin: 0">
-                  <span class="value">  {{ props.row.today_loan_view_count }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="历史扣量结果：" style="margin: 0">
-                  <span class="value">  {{ props.row.history_today_register_count_c }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="今日扣量结果：" style="margin: 0">
-                  <span class="value">  {{ props.row.today_register_count_c }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="渠道名">
+      <el-table-column align="center" label="渠道名" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.channel_name || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="登录名">
+      <el-table-column align="center" label="登录名" width="100">
         <template slot-scope="scope">
           <span>{{ (scope.row.user&& scope.row.user.name) || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="密码">
+      <el-table-column align="center" label="密码" width="100">
         <template slot-scope="scope">
           <span>{{ (scope.row.user&& scope.row.user.password_raw) || '-' }}</span>
         </template>
@@ -141,26 +97,32 @@
           <span>{{ formatDateTime(scope.row.create_at) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="单价">
+      <el-table-column align="center" label="单价" width="60">
         <template slot-scope="scope">
           <span>{{ scope.row.unit_price }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="扣量基数">
+      <el-table-column align="center" label="扣量基数" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.deduction_base }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="状态">
+      <el-table-column align="center" label="状态" width="80">
         <template slot-scope="scope">
           <el-tag :type="formatStatusType(scope.row.status)">{{ formatStatus(scope.row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="300">
+      <el-table-column align="url" label="渠道链接">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleEdit2(scope.row)">修改扣量结果</el-button>
+          <span>www.aa.com?cc={{ scope.row._id || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="200">
+        <template slot-scope="scope">
+          <router-link :to="'/channel/edit/'+scope.row._id">
+            <el-button type="primary" size="mini">修改配置</el-button>
+          </router-link>
           <el-button size="mini" @click="handleChangeStatus(scope.row)">{{ scope.row.status === 1?'下架':'上架' }}</el-button>
-          <el-button type="primary" size="mini" @click="handleCreateUrl(scope.row)">生成链接</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -348,8 +310,9 @@ export default {
       }
     },
     handleCreateUrl(row) {
-      this.$alert(`http://aaaa.com?cc=${row._id}`, '渠道连接', {
+      this.$alert(`<div>${row.url || '暂未配置'}</div>`, '渠道连接', {
         confirmButtonText: '确定',
+        dangerouslyUseHTMLString: true,
         callback: action => {
         }
       })
