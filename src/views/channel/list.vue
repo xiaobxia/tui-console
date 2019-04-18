@@ -31,44 +31,72 @@
         <template slot-scope="props">
           <el-form>
             <el-row :gutter="12">
-              <el-col :span="6">
+              <el-col :span="12">
+                <el-form-item label="历史验证码发送次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_verification_code_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="今日验证码发送次数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_verification_code_count }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="12">
+              <el-col :span="12">
                 <el-form-item label="历史注册数：" style="margin: 0">
                   <span class="value">  {{ props.row.history_register_count }}</span>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <el-form-item label="今日注册数：" style="margin: 0">
                   <span class="value">  {{ props.row.today_register_count }}</span>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+            </el-row>
+            <el-row :gutter="12">
+              <el-col :span="12">
+                <el-form-item label="历史下载数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_download_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="今日下载数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_download_count }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="12">
+              <el-col :span="12">
+                <el-form-item label="历史app激活数：" style="margin: 0">
+                  <span class="value">  {{ props.row.history_app_count }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="今日app激活数：" style="margin: 0">
+                  <span class="value">  {{ props.row.today_app_count }}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="12">
+              <el-col :span="12">
                 <el-form-item label="历史扣量结果：" style="margin: 0">
                   <span class="value">  {{ props.row.history_register_count_c }}</span>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <el-form-item label="今日扣量结果：" style="margin: 0">
                   <span class="value">  {{ props.row.today_register_count_c }}</span>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="12">
-              <el-col :span="6">
-                <el-form-item label="历史验证码发送次数：" style="margin: 0">
-                  <span class="value">  {{ props.row.history_verification_code_count }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="今日验证码发送次数：" style="margin: 0">
-                  <span class="value">  {{ props.row.today_verification_code_count }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <el-form-item label="历史链接点击：" style="margin: 0">
                   <span class="value">  {{ props.row.history_click_count }}</span>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <el-form-item label="今日链接点击：" style="margin: 0">
                   <span class="value">  {{ props.row.today_click_count }}</span>
                 </el-form-item>
@@ -80,6 +108,11 @@
       <el-table-column align="center" label="渠道名" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.channel_name || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="跳转类型" width="120">
+        <template slot-scope="scope">
+          <span>{{ scope.row.channel_platform }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="登录名" width="100">
@@ -114,7 +147,7 @@
       </el-table-column>
       <el-table-column align="url" label="渠道链接">
         <template slot-scope="scope">
-          <span>www.aa.com?cc={{ scope.row._id || '-' }}</span>
+          <span>{{ createUrl(scope.row) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
@@ -137,6 +170,12 @@
         </el-form-item>
         <el-form-item prop="password" label="登录密码">
           <el-input v-model="dialogForm.password"/>
+        </el-form-item>
+        <el-form-item prop="channel_platform" label="跳转模式：">
+          <el-select v-model="dialogForm.channel_platform" :style="{width: '100%'}" class="filter-item">
+            <el-option value="下载app" label="下载app"/>
+            <el-option value="h5" label="h5"/>
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -162,6 +201,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
   channel_name: '',
@@ -170,7 +210,8 @@ const searchFormBase = {
 const dialogFormBase = {
   channel_name: '',
   name: '',
-  password: ''
+  password: '',
+  channel_platform: ''
 }
 
 const dialogFormBase2 = {
@@ -195,7 +236,8 @@ export default {
       dialogFormRules: {
         channel_name: [{ required: true, message: '请输入渠道名称', trigger: 'blur' }],
         name: [{ required: true, message: '请输入登录名', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入登录密码', trigger: 'blur' }]
+        password: [{ required: true, message: '请输入登录密码', trigger: 'blur' }],
+        channel_platform: [{ required: true, message: '请选择跳转模式', trigger: 'blur' }]
       },
       dialogFormVisible2: false,
       dialogForm2: Object.assign({}, dialogFormBase2),
@@ -358,6 +400,13 @@ export default {
           return false
         }
       })
+    },
+    createUrl(row) {
+      const query = { cc: row._id }
+      if (row.channel_platform === 'h5') {
+        query.h5 = 'true'
+      }
+      return `http://localhost:3001/#/?${qs.stringify(query)}`
     }
   }
 }

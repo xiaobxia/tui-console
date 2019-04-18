@@ -26,6 +26,14 @@
             <el-input v-model="dialogForm.unit_price"/>
           </el-form-item>
         </el-col>
+        <el-col :span="6">
+          <el-form-item prop="channel_platform" label="跳转模式：">
+            <el-select v-model="dialogForm.channel_platform" :style="{width: '100%'}" class="filter-item">
+              <el-option value="下载app" label="下载app"/>
+              <el-option value="h5" label="h5"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
   </div>

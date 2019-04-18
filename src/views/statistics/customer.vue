@@ -62,6 +62,16 @@
           <span>{{ scope.row.verification_code }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="下载app">
+        <template slot-scope="scope">
+          <el-tag :type="formatShiFouType(scope.row.has_download)">{{ formatShiFou(scope.row.has_download) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="使用app">
+        <template slot-scope="scope">
+          <el-tag :type="formatShiFouType(scope.row.has_app)">{{ formatShiFou(scope.row.has_app) }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="页面浏览次数">
         <template slot-scope="scope">
           <span>{{ scope.row.view_count }}</span>
