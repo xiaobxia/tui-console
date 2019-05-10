@@ -179,7 +179,7 @@ export default {
       // 七牛云上传储存区域的上传域名
       upload_qiniu_url: 'http://upload.qiniup.com',
       // 七牛云返回储存图片的子域名
-      upload_qiniu_addr: 'http://pp9panj8a.bkt.clouddn.com/'
+      upload_qiniu_addr: 'http://tuiinfo.xiaobxia.com/'
     }
   },
   computed: {},
