@@ -3,14 +3,17 @@
     <div class="filter-container">
       <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
         <el-row :gutter="12">
-          <el-col :span="6">
-            <el-form-item prop="if_contact" label="是否联系：">
-              <el-select v-model="searchForm.if_contact" :style="{width: '100%'}" class="filter-item">
-                <el-option label="全部" value="-"/>
-                <el-option value="true" label="是"/>
-                <el-option value="false" label="否"/>
-              </el-select>
-          </el-form-item></el-col>
+          <el-col :span="12">
+            <el-form-item prop="time" label="申请时间：">
+              <el-date-picker
+                v-model="searchForm.time"
+                style="width: 100%"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"/>
+            </el-form-item>
+          </el-col>
           <el-col :span="6">
             <el-button class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
             </el-button>
@@ -31,25 +34,9 @@
           <span>{{ scope.row.mobile || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="产品点击次数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.click_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="是否联系">
-        <template slot-scope="scope">
-          <el-tag :type="formatIfContact(scope.row.if_contact)">{{ scope.row.if_contact? '是': '否' }}</el-tag>
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">
           <span>{{ formatDateTime(scope.row.create_at) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="200">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleChangeStatus(scope.row)">更改联系状态
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -66,7 +53,7 @@
 import moment from 'moment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
-  if_contact: '-'
+  time: ['', '']
 }
 export default {
   name: 'WhiteUser',
