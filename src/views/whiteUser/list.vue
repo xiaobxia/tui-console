@@ -14,6 +14,17 @@
                 end-placeholder="结束日期"/>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item prop="time" label="活跃时间：">
+              <el-date-picker
+                v-model="searchForm.timeA"
+                style="width: 100%"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"/>
+            </el-form-item>
+          </el-col>
           <el-col :span="6">
             <el-button class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
             </el-button>
@@ -32,6 +43,11 @@
       <el-table-column align="center" label="手机号">
         <template slot-scope="scope">
           <span>{{ scope.row.mobile || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="活跃时间">
+        <template slot-scope="scope">
+          <span>{{ formatDateTime(scope.row.active_at) }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建时间">
@@ -53,7 +69,8 @@
 import moment from 'moment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
-  time: ['', '']
+  time: ['', ''],
+  timeA: ['', '']
 }
 export default {
   name: 'WhiteUser',
@@ -85,6 +102,11 @@ export default {
           if (this.searchForm['time'][0]) {
             data.beginTime = moment(this.searchForm.time[0]).format('YYYY-MM-DD HH:mm:ss')
             data.endTime = moment(this.searchForm.time[1]).format('YYYY-MM-DD HH:mm:ss')
+          }
+        } else if (key === 'timeA') {
+          if (this.searchForm['timeA'][0]) {
+            data.beginTimeA = moment(this.searchForm.timeA[0]).format('YYYY-MM-DD HH:mm:ss')
+            data.endTimeA = moment(this.searchForm.timeA[1]).format('YYYY-MM-DD HH:mm:ss')
           }
         } else {
           data[key] = this.searchForm[key]
