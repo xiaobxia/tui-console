@@ -25,6 +25,17 @@
                 end-placeholder="结束日期"/>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="12">
+          <el-col :span="6">
+            <el-form-item prop="source" label="来源：">
+              <el-select v-model="searchForm.source" :style="{width: '100%'}" class="filter-item">
+                <el-option label="全部" value=""/>
+                <el-option value="xjd" label="现金贷"/>
+                <el-option value="dc" label="贷超"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="6">
             <el-button class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
             </el-button>
@@ -43,6 +54,11 @@
       <el-table-column align="center" label="手机号">
         <template slot-scope="scope">
           <span>{{ scope.row.mobile || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="来源">
+        <template slot-scope="scope">
+          <span>{{ formatUserSource(scope.row.source)}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="活跃时间">
@@ -70,7 +86,8 @@ import moment from 'moment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
   time: ['', ''],
-  timeA: ['', '']
+  timeA: ['', ''],
+  source: ''
 }
 export default {
   name: 'WhiteUser',

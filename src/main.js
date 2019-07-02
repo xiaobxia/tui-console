@@ -62,6 +62,16 @@ Vue.prototype.formatStatus = function(status) {
   }
 }
 
+Vue.prototype.formatUserSource = function(status) {
+  if (status === 'xjd') {
+    return '现金贷'
+  } else if (status === 'dc') {
+    return '贷超'
+  } else {
+    return '--'
+  }
+}
+
 Vue.prototype.formatStatusType = function(status) {
   if (status === 1) {
     return 'success'
