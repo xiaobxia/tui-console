@@ -58,7 +58,7 @@
       </el-table-column>
       <el-table-column align="center" label="来源">
         <template slot-scope="scope">
-          <span>{{ formatUserSource(scope.row.source)}}</span>
+          <span>{{ formatUserSource(scope.row.source) }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="活跃时间">
