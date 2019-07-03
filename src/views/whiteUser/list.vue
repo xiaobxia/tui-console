@@ -66,6 +66,21 @@
           <span>{{ formatUserSource(scope.row.source) }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="实名">
+        <template slot-scope="scope">
+          <el-tag :type="formatShiFouType(scope.row.is_true_name)">{{ formatShiFou(scope.row.is_true_name) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="下款">
+        <template slot-scope="scope">
+          <el-tag :type="formatShiFouType(scope.row.if_down)">{{ formatShiFou(scope.row.has_app) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="回款">
+        <template slot-scope="scope">
+          <el-tag :type="formatShiFouType(scope.row.if_back)">{{ formatShiFou(scope.row.if_back) }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="活跃时间">
         <template slot-scope="scope">
           <span>{{ formatDateTime(scope.row.active_at) }}</span>
