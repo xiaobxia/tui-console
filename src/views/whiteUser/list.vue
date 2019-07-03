@@ -28,6 +28,11 @@
         </el-row>
         <el-row :gutter="12">
           <el-col :span="6">
+            <el-form-item prop="mobile" label="手机号：">
+              <el-input v-model="searchForm.mobile"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
             <el-form-item prop="source" label="来源：">
               <el-select v-model="searchForm.source" :style="{width: '100%'}" class="filter-item">
                 <el-option label="全部" value=""/>
@@ -87,7 +92,8 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 const searchFormBase = {
   time: ['', ''],
   timeA: ['', ''],
-  source: ''
+  source: '',
+  mobile: ''
 }
 export default {
   name: 'WhiteUser',
