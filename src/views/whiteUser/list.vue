@@ -1,5 +1,11 @@
 <template>
   <div class="app-container">
+    <div style="font-size: 20px;padding: 20px;">
+      <span style="margin-right: 15px">今日注册:{{ todayInfo.dayR }}</span>
+      <span style="margin-right: 15px">今日活跃:{{ todayInfo.dayA }}</span>
+      <span style="margin-right: 15px">今日注册现金贷:{{ todayInfo.dayRX }}</span>
+      <span style="margin-right: 15px">今日活跃现金贷:{{ todayInfo.dayAX }}</span>
+    </div>
     <div class="filter-container">
       <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
         <el-row :gutter="12">
@@ -68,12 +74,12 @@
       </el-table-column>
       <el-table-column align="center" label="实名">
         <template slot-scope="scope">
-          <el-tag :type="formatShiFouType(scope.row.is_true_name)">{{ formatShiFou(scope.row.is_true_name) }}</el-tag>
+          <el-tag :type="formatShiFouType(scope.row.if_true_name)">{{ formatShiFou(scope.row.if_true_name) }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="下款">
         <template slot-scope="scope">
-          <el-tag :type="formatShiFouType(scope.row.if_down)">{{ formatShiFou(scope.row.has_app) }}</el-tag>
+          <el-tag :type="formatShiFouType(scope.row.if_down)">{{ formatShiFou(scope.row.if_down) }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="回款">
@@ -126,7 +132,8 @@ export default {
         pageSize: 20
       },
       channelList: [],
-      productList: []
+      productList: [],
+      todayInfo: {}
     }
   },
   created() {
@@ -153,6 +160,9 @@ export default {
       return data
     },
     initPage() {
+      this.$http.get('whiteUser/getTodayCount').then(response => {
+        this.todayInfo = response.data
+      })
       this.queryList()
     },
     queryList() {
