@@ -72,6 +72,11 @@
           <span>{{ formatUserSource(scope.row.source) }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="活跃天数">
+        <template slot-scope="scope">
+          <span>{{ scope.row.active_days }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="实名">
         <template slot-scope="scope">
           <el-tag :type="formatShiFouType(scope.row.if_true_name)">{{ formatShiFou(scope.row.if_true_name) }}</el-tag>
