@@ -29,15 +29,16 @@
           <span>{{ formatDateTime(scope.row.create_at) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="100">
+      <el-table-column align="center" label="操作">
         <template slot-scope="scope">
+          <el-button size="mini" @click="handleChangeStatus(scope.row)">{{ scope.row.status === 1?'禁用':'启用' }}</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">修改</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
     <pagination v-show="listTotal>0" :total="listTotal" :page.sync="listQuery.current" :limit.sync="listQuery.pageSize" @pagination="getUsers" />
-    <el-dialog :visible.sync="dialogFormVisible" title="添加后台管理员" @closed="handleCancel">
+    <el-dialog :visible.sync="dialogFormVisible" :title="dialogFormType === 'add' ? '添加后台管理员': '修改后台管理员'" @closed="handleCancel">
       <el-form ref="dialogForm" :model="dialogForm" :rules="dialogFormRules" label-position="right" label-width="120px">
         <el-form-item prop="roles" label="角色：">
           <el-select v-model="dialogForm.roles" :style="{width: '100%'}" class="filter-item">
@@ -76,6 +77,7 @@ export default {
       listTotal: 0,
       listLoading: true,
       dialogFormVisible: false,
+      dialogFormType: 'add',
       dialogForm: Object.assign({}, dialogFormBase),
       dialogFormRules: {
         roles: [{ required: true, message: '请选择角色', trigger: 'blur' }],
@@ -112,11 +114,18 @@ export default {
       this.listQuery.current = val
       this.getUsers()
     },
+    handleUpdate(row) {
+      this.dialogFormType = 'edit'
+      this.dialogFormVisible = true
+      this.dialogForm = Object.assign({}, row)
+      this.dialogForm.roles = row.roles[0]
+    },
     closeForm() {
       this.dialogFormVisible = false
       this.dialogForm = Object.assign({}, dialogFormBase)
     },
     handleCreate() {
+      this.dialogFormType = 'add'
       this.dialogFormVisible = true
     },
     handleCancel() {
@@ -127,7 +136,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$http.post(
-            'admin/addAdminUser',
+            this.dialogFormType === 'add' ? 'admin/addAdminUser' : 'admin/updateAdminUser',
             this.dialogForm
           ).then(() => {
             this.loading = false
@@ -170,6 +179,22 @@ export default {
           type: 'info',
           message: '已取消删除'
         })
+      })
+    },
+    handleChangeStatus(row) {
+      let newStatus = 1
+      if (row.status === 1) {
+        newStatus = 2
+      }
+      this.$http.post('admin/updateAdminUser', {
+        name: row.name,
+        status: newStatus
+      }).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '修改成功!'
+        })
+        this.initPage()
       })
     }
   }

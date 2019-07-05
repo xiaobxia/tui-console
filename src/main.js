@@ -41,10 +41,15 @@ Vue.prototype.formatRoles = function(roles) {
   if (roles && roles.length) {
     const value = roles[0]
     const rolesMap = {
+      'superAdmin': '超级管理员',
       'admin': '管理员',
       'test': '测试',
       'channel': '渠道',
-      'user': '客户'
+      'user': '客户',
+      'buyer-1': '注册买家',
+      'buyer-2': '实名买家',
+      'buyer-3': '下款买家',
+      'buyer-4': '回款买家'
     }
     return rolesMap[value]
   } else {
