@@ -12,6 +12,9 @@ function checkIn(userRoles, roleList) {
 function checkPermission(userRoles, current) {
   // roles :{include, exclude}
   const roleMap = current.meta && current.meta.roles
+  if (userRoles[0] === 'superAdmin') {
+    return true
+  }
   if (roleMap) {
     let permission = true
     const include = roleMap.include

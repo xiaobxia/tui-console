@@ -75,14 +75,14 @@ export const asyncRouterMap = [
     meta: {
       title: '管理员',
       icon: 'fas fa-user',
-      roles: { include: ['admin'] }
+      roles: { include: ['superAdmin'] }
     },
     children: [
       {
         path: 'list',
         component: () => import('@/views/user/list'),
         name: 'UserList',
-        meta: { title: '管理员列表', roles: { include: ['admin'] }}
+        meta: { title: '管理员列表', roles: { include: ['superAdmin'] }}
       }
     ]
   },
@@ -192,6 +192,25 @@ export const asyncRouterMap = [
         component: () => import('@/views/whiteUser/list'),
         name: 'WhiteUserList',
         meta: { title: '白名单', roles: { include: ['admin'] }}
+      }
+    ]
+  },
+  {
+    path: '/backUser',
+    component: Layout,
+    redirect: '/backUser/list',
+    name: 'BackUser',
+    meta: {
+      title: '统计',
+      icon: 'fas fa-database',
+      roles: { include: ['superAdmin'] }
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/backUser/list'),
+        name: 'BackUserList',
+        meta: { title: '回款', roles: { include: ['superAdmin'] }}
       }
     ]
   },
