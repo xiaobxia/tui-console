@@ -1,12 +1,13 @@
 <template>
   <div class="app-container">
     <div style="font-size: 20px;padding: 20px;">
-      <span style="margin-right: 15px">今日注册:{{ todayInfo.dayR }}</span>
+      <span style="margin-right: 15px">今日注册A料:{{ todayInfo.dayR }}</span>
+      <span style="margin-right: 15px">今日注册现金贷:{{ todayInfo.dayRX }}</span>
+      <span style="margin-right: 15px">今日注册贷超:{{ todayInfo.dayRD }}</span>
       <span style="margin-right: 15px">今日实名:{{ todayInfo.dayTX }}</span>
       <span style="margin-right: 15px">今日下款:{{ todayInfo.dayDX }}</span>
       <span style="margin-right: 15px">今日回款:{{ todayInfo.dayBX }}</span>
       <span style="margin-right: 15px">今日活跃:{{ todayInfo.dayA }}</span>
-      <span style="margin-right: 15px">今日注册现金贷:{{ todayInfo.dayRX }}</span>
       <span style="margin-right: 15px">今日活跃现金贷:{{ todayInfo.dayAX }}</span>
     </div>
     <div class="filter-container">

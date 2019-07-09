@@ -196,6 +196,25 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/downUser',
+    component: Layout,
+    redirect: '/downUser/list',
+    name: 'DownUser',
+    meta: {
+      title: '统计',
+      icon: 'fas fa-database',
+      roles: { include: ['superAdmin'] }
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/downUser/list'),
+        name: 'DownUserList',
+        meta: { title: '下款', roles: { include: ['superAdmin'] }}
+      }
+    ]
+  },
+  {
     path: '/backUser',
     component: Layout,
     redirect: '/backUser/list',

@@ -1,19 +1,10 @@
 <template>
   <div class="app-container">
-    <div style="font-size: 20px;padding: 20px;">
-      <span style="margin-right: 15px">今日注册:{{ todayInfo.dayR }}</span>
-      <span style="margin-right: 15px">今日实名:{{ todayInfo.dayTX }}</span>
-      <span style="margin-right: 15px">今日下款:{{ todayInfo.dayDX }}</span>
-      <span style="margin-right: 15px">今日回款:{{ todayInfo.dayBX }}</span>
-      <span style="margin-right: 15px">今日活跃:{{ todayInfo.dayA }}</span>
-      <span style="margin-right: 15px">今日注册现金贷:{{ todayInfo.dayRX }}</span>
-      <span style="margin-right: 15px">今日活跃现金贷:{{ todayInfo.dayAX }}</span>
-    </div>
     <div class="filter-container">
       <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item prop="time" label="申请时间：">
+            <el-form-item prop="time" label="时间：">
               <el-date-picker
                 v-model="searchForm.time"
                 style="width: 100%"
@@ -23,31 +14,9 @@
                 end-placeholder="结束日期"/>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item prop="time" label="活跃时间：">
-              <el-date-picker
-                v-model="searchForm.timeA"
-                style="width: 100%"
-                type="datetimerange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12">
           <el-col :span="6">
             <el-form-item prop="mobile" label="手机号：">
               <el-input v-model="searchForm.mobile"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item prop="source" label="来源：">
-              <el-select v-model="searchForm.source" :style="{width: '100%'}" class="filter-item">
-                <el-option label="全部" value=""/>
-                <el-option value="xjd" label="现金贷"/>
-                <el-option value="dc" label="贷超"/>
-              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -70,34 +39,14 @@
           <span>{{ scope.row.mobile || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="来源">
+      <el-table-column align="center" label="姓名">
         <template slot-scope="scope">
-          <span>{{ formatUserSource(scope.row.source) }}</span>
+          <span>{{ scope.row.name || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="活跃天数">
+      <el-table-column align="center" label="下款时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.active_days }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="实名">
-        <template slot-scope="scope">
-          <el-tag :type="formatShiFouType(scope.row.if_true_name)">{{ formatShiFou(scope.row.if_true_name) }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="下款">
-        <template slot-scope="scope">
-          <el-tag :type="formatShiFouType(scope.row.if_down)">{{ formatShiFou(scope.row.if_down) }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="回款">
-        <template slot-scope="scope">
-          <el-tag :type="formatShiFouType(scope.row.if_back)">{{ formatShiFou(scope.row.if_back) }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="活跃时间">
-        <template slot-scope="scope">
-          <span>{{ formatDateTime(scope.row.active_at) }}</span>
+          <span>{{ formatDateTime(scope.row.down_at) }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建时间">
@@ -120,12 +69,10 @@ import moment from 'moment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
   time: ['', ''],
-  timeA: ['', ''],
-  source: '',
   mobile: ''
 }
 export default {
-  name: 'WhiteUser',
+  name: 'DownUser',
   components: { Pagination },
   data() {
     return {
@@ -168,14 +115,11 @@ export default {
       return data
     },
     initPage() {
-      this.$http.get('whiteUser/getTodayCount').then(response => {
-        this.todayInfo = response.data
-      })
       this.queryList()
     },
     queryList() {
       this.listLoading = true
-      this.$http.get('whiteUser/getWhiteUsers', {
+      this.$http.get('whiteUser/getDownUsers', {
         ...this.formatSearch(this.searchForm),
         ...this.listQuery
       }).then(response => {

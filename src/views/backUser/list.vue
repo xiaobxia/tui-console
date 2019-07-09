@@ -4,7 +4,7 @@
       <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item prop="time" label="申请时间：">
+            <el-form-item prop="time" label="时间：">
               <el-date-picker
                 v-model="searchForm.time"
                 style="width: 100%"
