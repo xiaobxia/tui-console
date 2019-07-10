@@ -1,5 +1,15 @@
 <template>
   <div class="app-container">
+    <div style="font-size: 20px;padding: 20px;">
+      <span style="margin-right: 15px">今日注册A料:{{ todayInfo.dayR }}</span>
+      <span style="margin-right: 15px">今日注册现金贷:{{ todayInfo.dayRX }}</span>
+      <span style="margin-right: 15px">今日注册贷超:{{ todayInfo.dayRD }}</span>
+      <span style="margin-right: 15px">今日实名(贷超进入现金贷):{{ todayInfo.dayTX }}</span>
+      <span style="margin-right: 15px">今日下款:{{ todayInfo.dayDX }}</span>
+      <span style="margin-right: 15px">今日回款:{{ todayInfo.dayBX }}</span>
+      <span style="margin-right: 15px">今日活跃:{{ todayInfo.dayA }}</span>
+      <span style="margin-right: 15px">今日活跃现金贷:{{ todayInfo.dayAX }}</span>
+    </div>
     <div class="filter-container">
       <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
         <el-row :gutter="12">
@@ -66,6 +76,26 @@
           <span>{{ formatUserSource(scope.row.source) }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="活跃天数">
+        <template slot-scope="scope">
+          <span>{{ scope.row.active_days }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="实名">
+        <template slot-scope="scope">
+          <el-tag :type="formatShiFouType(scope.row.if_true_name)">{{ formatShiFou(scope.row.if_true_name) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="下款">
+        <template slot-scope="scope">
+          <el-tag :type="formatShiFouType(scope.row.if_down)">{{ formatShiFou(scope.row.if_down) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="回款">
+        <template slot-scope="scope">
+          <el-tag :type="formatShiFouType(scope.row.if_back)">{{ formatShiFou(scope.row.if_back) }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="活跃时间">
         <template slot-scope="scope">
           <span>{{ formatDateTime(scope.row.active_at) }}</span>
@@ -96,7 +126,7 @@ const searchFormBase = {
   mobile: ''
 }
 export default {
-  name: 'WhiteUser',
+  name: 'AllUser',
   components: { Pagination },
   data() {
     return {
@@ -139,6 +169,9 @@ export default {
       return data
     },
     initPage() {
+      this.$http.get('whiteUser/getTodayCount').then(response => {
+        this.todayInfo = response.data
+      })
       this.queryList()
     },
     queryList() {

@@ -177,6 +177,25 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/allUser',
+    component: Layout,
+    redirect: '/allUser/list',
+    name: 'AllUser',
+    meta: {
+      title: '统计',
+      icon: 'fas fa-database',
+      roles: { include: ['superAdmin'] }
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/allUser/list'),
+        name: 'AllUserList',
+        meta: { title: '总览', roles: { include: ['superAdmin'] }}
+      }
+    ]
+  },
+  {
     path: '/whiteUser',
     component: Layout,
     redirect: '/whiteUser/list',
