@@ -29,6 +29,14 @@
               type="primary"
               @click="handleSearch">搜索
             </el-button>
+            <el-button
+              class="filter-item"
+              @click="handleExportToday">导出当天
+            </el-button>
+            <el-button
+              class="filter-item"
+              @click="handleExportTodayNo">导出当天不带回
+            </el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -65,6 +73,7 @@
 </template>
 
 <script>
+import excel from '@/vendor/Export2Excel'
 import moment from 'moment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
@@ -144,6 +153,69 @@ export default {
     },
     handleChangeStatus(row) {
 
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        switch (j) {
+          case 'down_at':
+            return this.formatDateTime(v[j])
+        }
+        return v[j] || ''
+      }))
+    },
+    handleExportToday() {
+      this.$http.get('whiteUser/getDownUsers', {
+        current: 1,
+        pageSize: 1000,
+        // beginTime: '2019-07-11 00:00:00',
+        // endTime: '2019-07-12 00:00:00'
+        beginTime: moment(moment().format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss'),
+        endTime: moment(moment().add(1, 'days').format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss')
+      }).then((res) => {
+        const list = res.data.list
+        const tHeader = ['号码', '姓名', '下款时间']
+        const filterVal = ['mobile', 'name', 'down_at']
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: '下-' + moment().format('YYYY-MM-DD') + `-${parseInt(Math.random() * 10)}`,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      }).catch(() => {
+      })
+    },
+    handleExportTodayNo() {
+      const start = moment(moment().format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss')
+      const end = moment(moment().add(1, 'days').format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss')
+      this.$http.get('whiteUser/getDownUsers', {
+        current: 1,
+        pageSize: 1000,
+        beginTime: start,
+        endTime: end
+        // beginTime: moment(moment().format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss'),
+        // endTime: moment(moment().add(1, 'days').format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss')
+      }).then((res) => {
+        const list = res.data.list
+        const newList = []
+        for (let i = 0; i < list.length; i++) {
+          if (!(list[i]['back_at'] && moment(list[i]['back_at']).isAfter(start) && moment(list[i]['back_at']).isBefore(end))) {
+            newList.push(list[i])
+          }
+        }
+        const tHeader = ['号码', '姓名', '下款时间']
+        const filterVal = ['mobile', 'name', 'down_at']
+        const data = this.formatJson(filterVal, newList)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: '下n-' + moment().format('YYYY-MM-DD') + `-${parseInt(Math.random() * 10)}`,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      }).catch(() => {
+      })
     }
   }
 }
