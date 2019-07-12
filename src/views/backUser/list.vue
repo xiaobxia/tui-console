@@ -29,6 +29,10 @@
               type="primary"
               @click="handleSearch">搜索
             </el-button>
+            <el-button
+              class="filter-item"
+              @click="handleExportToday">导出当天
+            </el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -65,6 +69,7 @@
 </template>
 
 <script>
+import excel from '@/vendor/Export2Excel'
 import moment from 'moment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
@@ -144,6 +149,36 @@ export default {
     },
     handleChangeStatus(row) {
 
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        switch (j) {
+          case 'back_at':
+            return this.formatDateTime(v[j])
+        }
+        return v[j] || ''
+      }))
+    },
+    handleExportToday() {
+      this.$http.get('whiteUser/getBackUsers', {
+        current: 1,
+        pageSize: 1000,
+        beginTime: moment(moment().format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss'),
+        endTime: moment(moment().add(1, 'days').format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss')
+      }).then((res) => {
+        const list = res.data.list
+        const tHeader = ['号码', '姓名', '回款时间']
+        const filterVal = ['mobile', 'name', 'back_at']
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: moment().format('YYYY-MM-DD') + `-${parseInt(Math.random() * 10)}`,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      }).catch(() => {
+      })
     }
   }
 }
