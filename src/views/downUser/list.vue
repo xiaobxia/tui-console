@@ -57,9 +57,14 @@
           <span>{{ formatDateTime(scope.row.down_at) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间">
+      <el-table-column align="center" label="回款">
         <template slot-scope="scope">
-          <span>{{ formatDateTime(scope.row.create_at) }}</span>
+          <el-tag :type="formatShiFouType(scope.row.if_back)">{{ formatShiFou(scope.row.if_back) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="回款时间">
+        <template slot-scope="scope">
+          <span>{{ formatDateTime(scope.row.back_at) }}</span>
         </template>
       </el-table-column>
     </el-table>

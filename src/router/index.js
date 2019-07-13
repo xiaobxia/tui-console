@@ -252,5 +252,24 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/todayBackUser',
+    component: Layout,
+    redirect: '/todayBackUser/list',
+    name: 'TodayBackUser',
+    meta: {
+      title: '统计',
+      icon: 'fas fa-database',
+      roles: { include: ['buyer-4'] }
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/todayBackUser/list'),
+        name: 'TodayBackUser',
+        meta: { title: '回款', roles: { include: ['buyer-4'] }}
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -1,42 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
-        <el-row :gutter="12">
-          <el-col :span="12">
-            <el-form-item prop="time" label="时间：">
-              <el-date-picker
-                v-model="searchForm.time"
-                style="width: 100%"
-                type="datetimerange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item prop="mobile" label="手机号：">
-              <el-input v-model="searchForm.mobile"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-button class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
-            </el-button>
-            <el-button
-              :loading="searchLoading"
-              class="filter-item"
-              icon="el-icon-search"
-              type="primary"
-              @click="handleSearch">搜索
-            </el-button>
-            <el-button
-              class="filter-item"
-              @click="handleExportToday">导出当天
-            </el-button>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="手机号">
         <template slot-scope="scope">
@@ -53,16 +16,6 @@
           <span>{{ formatDateTime(scope.row.back_at) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="下款">
-        <template slot-scope="scope">
-          <el-tag :type="formatShiFouType(scope.row.if_down)">{{ formatShiFou(scope.row.if_down) }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="下款时间">
-        <template slot-scope="scope">
-          <span>{{ formatDateTime(scope.row.down_at) }}</span>
-        </template>
-      </el-table-column>
     </el-table>
     <pagination
       v-show="listTotal>0"
@@ -74,7 +27,6 @@
 </template>
 
 <script>
-import excel from '@/vendor/Export2Excel'
 import moment from 'moment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
@@ -82,7 +34,7 @@ const searchFormBase = {
   mobile: ''
 }
 export default {
-  name: 'BackUser',
+  name: 'TodayBackUser',
   components: { Pagination },
   data() {
     return {
@@ -129,8 +81,7 @@ export default {
     },
     queryList() {
       this.listLoading = true
-      this.$http.get('whiteUser/getBackUsers', {
-        ...this.formatSearch(this.searchForm),
+      this.$http.get('whiteUser/getTodayBackUsers', {
         ...this.listQuery
       }).then(response => {
         this.list = response.data.list
@@ -154,36 +105,6 @@ export default {
     },
     handleChangeStatus(row) {
 
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        switch (j) {
-          case 'back_at':
-            return this.formatDateTime(v[j])
-        }
-        return v[j] || ''
-      }))
-    },
-    handleExportToday() {
-      this.$http.get('whiteUser/getBackUsers', {
-        current: 1,
-        pageSize: 1000,
-        beginTime: moment(moment().format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss'),
-        endTime: moment(moment().add(1, 'days').format('YYYY-MM-DD')).format('YYYY-MM-DD HH:mm:ss')
-      }).then((res) => {
-        const list = res.data.list
-        const tHeader = ['号码', '姓名', '回款时间']
-        const filterVal = ['mobile', 'name', 'back_at']
-        const data = this.formatJson(filterVal, list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: '回-' + moment().format('YYYY-MM-DD') + `-${parseInt(Math.random() * 10)}`,
-          autoWidth: true,
-          bookType: 'xlsx'
-        })
-      }).catch(() => {
-      })
     }
   }
 }

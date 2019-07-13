@@ -44,6 +44,10 @@
           <el-select v-model="dialogForm.roles" :style="{width: '100%'}" class="filter-item">
             <el-option value="admin" label="管理员"/>
             <el-option value="test" label="测试"/>
+            <el-option value="buyer-1" label="注册买家"/>
+            <el-option value="buyer-2" label="实名买家"/>
+            <el-option value="buyer-3" label="下款买家"/>
+            <el-option value="buyer-4" label="回款买家"/>
           </el-select>
         </el-form-item>
         <el-form-item prop="name" label="登录名">
