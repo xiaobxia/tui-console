@@ -260,14 +260,33 @@ export const asyncRouterMap = [
     meta: {
       title: '统计',
       icon: 'fas fa-database',
-      roles: { include: ['buyer-4'] }
+      roles: { include: ['buyer-4', 'buyer-5'] }
     },
     children: [
       {
         path: 'list',
         component: () => import('@/views/todayBackUser/list'),
         name: 'TodayBackUser',
-        meta: { title: '回款', roles: { include: ['buyer-4'] }}
+        meta: { title: '回款', roles: { include: ['buyer-4', 'buyer-5'] }}
+      }
+    ]
+  },
+  {
+    path: '/todayRegisterUser',
+    component: Layout,
+    redirect: '/todayRegisterUser/list',
+    name: 'TodayRegisterUser',
+    meta: {
+      title: '统计',
+      icon: 'fas fa-database',
+      roles: { include: ['buyer-1', 'buyer-5'] }
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/todayRegisterUser/list'),
+        name: 'TodayRegisterUser',
+        meta: { title: '注册', roles: { include: ['buyer-1', 'buyer-5'] }}
       }
     ]
   },
