@@ -1,7 +1,7 @@
 function checkIn(userRoles, roleList) {
   for (let i = 0; i < userRoles.length; i++) {
     const userRole = userRoles[i]
-    for (let j = 0; j < userRoles.length; j++) {
+    for (let j = 0; j < roleList.length; j++) {
       const roleItem = roleList[j]
       if (roleItem === userRole) {
         return true

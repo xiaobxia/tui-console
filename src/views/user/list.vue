@@ -49,6 +49,8 @@
             <el-option value="buyer-3" label="下款买家"/>
             <el-option value="buyer-4" label="回款买家"/>
             <el-option value="buyer-5" label="注册回款买家"/>
+            <el-option value="buyer-6" label="注册下款买家"/>
+            <el-option value="buyer-7" label="注册下款回款买家"/>
           </el-select>
         </el-form-item>
         <el-form-item prop="name" label="登录名">

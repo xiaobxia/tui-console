@@ -68,15 +68,16 @@ const user = {
     },
     // 登出
     LogOut() {
-      return Http.get('auth/logout', {
-        token: localStorage.getItem('token'),
-        platform: 'mobile'
-      }).then(() => {
-        localStorage.removeItem('token')
-        storageUtil.initUserInfo({
-          isLogin: false
-        })
+      localStorage.removeItem('token')
+      storageUtil.initUserInfo({
+        isLogin: false
       })
+      return true
+      // return Http.get('auth/logout', {
+      //   token: localStorage.getItem('token'),
+      //   platform: 'mobile'
+      // }).then(() => {
+      // })
     }
   }
 }
