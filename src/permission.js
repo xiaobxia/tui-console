@@ -11,6 +11,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   console.log('beforeEach')
   const userInfo = storageUtil.getUserInfo()
+  console.log(userInfo)
   if (userInfo.isLogin === true) {
     // 登入了还去登录，直接转首页
     if (to.path === '/login') {

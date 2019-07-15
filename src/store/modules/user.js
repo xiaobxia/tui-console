@@ -63,8 +63,26 @@ const user = {
         return data.data
       })
     },
-
-    CheckLogin({ commit }, userInfo) {
+    checkUser({ commit }) {
+      return Http.get('auth/checkLogin', {
+        token: localStorage.getItem('token')
+      }).then((data) => {
+        if (data.success && data.data.isLogin === true) {
+          window._token = data.data.token
+          localStorage.setItem('token', data.data.token)
+          storageUtil.initUserInfo({
+            ...data.data,
+            isLogin: true
+          })
+          return data
+        } else {
+          localStorage.removeItem('token')
+          storageUtil.initUserInfo({
+            isLogin: false
+          })
+          return data
+        }
+      })
     },
     // 登出
     LogOut() {
