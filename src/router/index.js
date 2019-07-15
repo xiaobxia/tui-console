@@ -86,96 +86,96 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/channel',
-    component: Layout,
-    redirect: '/channel/list',
-    name: 'Channel',
-    meta: {
-      title: '渠道管理',
-      icon: 'fas fa-handshake',
-      roles: { include: ['admin'] }
-    },
-    children: [
-      {
-        path: 'edit/:id',
-        component: () => import('@/views/channel/edit'),
-        name: 'EditChannel',
-        meta: { title: '编辑渠道', noCache: true, roles: { include: ['admin'] }},
-        hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/channel/list'),
-        name: 'ChannelList',
-        meta: { title: '渠道列表', roles: { include: ['admin'] }}
-      }
-    ]
-  },
-  {
-    path: '/product',
-    component: Layout,
-    redirect: '/product/list',
-    name: 'Product',
-    meta: {
-      title: '产品管理',
-      icon: 'fab fa-app-store-ios',
-      roles: { include: ['admin'] }
-    },
-    children: [
-      {
-        path: 'edit/:id',
-        component: () => import('@/views/product/edit'),
-        name: 'EditProduct',
-        meta: { title: '编辑产品', noCache: true, roles: { include: ['admin'] }},
-        hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/product/list'),
-        name: 'ProductList',
-        meta: { title: '产品列表', roles: { include: ['admin'] }}
-      }
-    ]
-  },
-  {
-    path: '/statistics',
-    component: Layout,
-    redirect: '/statistics/viewLog',
-    name: 'Statistics',
-    meta: {
-      title: '统计',
-      icon: 'fas fa-database',
-      roles: { include: ['admin'] }
-    },
-    children: [
-      {
-        path: 'customer',
-        component: () => import('@/views/statistics/customer'),
-        name: 'StatisticsCustomer',
-        meta: { title: '注册用户', roles: { include: ['admin'] }}
-      }
-    ]
-  },
-  {
-    path: '/agent',
-    component: Layout,
-    redirect: '/agent/registerLog',
-    name: 'Agent',
-    meta: {
-      title: '统计',
-      icon: 'fas fa-database',
-      roles: { include: ['channel'] }
-    },
-    children: [
-      {
-        path: 'registerLog',
-        component: () => import('@/views/agent/registerLog'),
-        name: 'AgentRegisterLog',
-        meta: { title: '注册统计', roles: { include: ['channel'] }}
-      }
-    ]
-  },
+  // {
+  //   path: '/channel',
+  //   component: Layout,
+  //   redirect: '/channel/list',
+  //   name: 'Channel',
+  //   meta: {
+  //     title: '渠道管理',
+  //     icon: 'fas fa-handshake',
+  //     roles: { include: ['admin'] }
+  //   },
+  //   children: [
+  //     {
+  //       path: 'edit/:id',
+  //       component: () => import('@/views/channel/edit'),
+  //       name: 'EditChannel',
+  //       meta: { title: '编辑渠道', noCache: true, roles: { include: ['admin'] }},
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/channel/list'),
+  //       name: 'ChannelList',
+  //       meta: { title: '渠道列表', roles: { include: ['admin'] }}
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/product',
+  //   component: Layout,
+  //   redirect: '/product/list',
+  //   name: 'Product',
+  //   meta: {
+  //     title: '产品管理',
+  //     icon: 'fab fa-app-store-ios',
+  //     roles: { include: ['admin'] }
+  //   },
+  //   children: [
+  //     {
+  //       path: 'edit/:id',
+  //       component: () => import('@/views/product/edit'),
+  //       name: 'EditProduct',
+  //       meta: { title: '编辑产品', noCache: true, roles: { include: ['admin'] }},
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/product/list'),
+  //       name: 'ProductList',
+  //       meta: { title: '产品列表', roles: { include: ['admin'] }}
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/statistics',
+  //   component: Layout,
+  //   redirect: '/statistics/viewLog',
+  //   name: 'Statistics',
+  //   meta: {
+  //     title: '统计',
+  //     icon: 'fas fa-database',
+  //     roles: { include: ['admin'] }
+  //   },
+  //   children: [
+  //     {
+  //       path: 'customer',
+  //       component: () => import('@/views/statistics/customer'),
+  //       name: 'StatisticsCustomer',
+  //       meta: { title: '注册用户', roles: { include: ['admin'] }}
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/agent',
+  //   component: Layout,
+  //   redirect: '/agent/registerLog',
+  //   name: 'Agent',
+  //   meta: {
+  //     title: '统计',
+  //     icon: 'fas fa-database',
+  //     roles: { include: ['channel'] }
+  //   },
+  //   children: [
+  //     {
+  //       path: 'registerLog',
+  //       component: () => import('@/views/agent/registerLog'),
+  //       name: 'AgentRegisterLog',
+  //       meta: { title: '注册统计', roles: { include: ['channel'] }}
+  //     }
+  //   ]
+  // },
   {
     path: '/allUser',
     component: Layout,
@@ -210,7 +210,7 @@ export const asyncRouterMap = [
         path: 'list',
         component: () => import('@/views/whiteUser/list'),
         name: 'WhiteUserList',
-        meta: { title: '白名单', roles: { include: ['admin'] }}
+        meta: { title: '注册明细', roles: { include: ['admin'] }}
       }
     ]
   },
@@ -229,7 +229,7 @@ export const asyncRouterMap = [
         path: 'list',
         component: () => import('@/views/downUser/list'),
         name: 'DownUserList',
-        meta: { title: '下款', roles: { include: ['superAdmin'] }}
+        meta: { title: '下款明细', roles: { include: ['superAdmin'] }}
       }
     ]
   },
@@ -248,7 +248,26 @@ export const asyncRouterMap = [
         path: 'list',
         component: () => import('@/views/backUser/list'),
         name: 'BackUserList',
-        meta: { title: '回款', roles: { include: ['superAdmin'] }}
+        meta: { title: '回款明细', roles: { include: ['superAdmin'] }}
+      }
+    ]
+  },
+  {
+    path: '/todayDownUser',
+    component: Layout,
+    redirect: '/todayDownUser/list',
+    name: 'TodayDownUser',
+    meta: {
+      title: '统计',
+      icon: 'fas fa-database',
+      roles: { include: ['buyer-3', 'buyer-6', 'buyer-7', 'buyer-8'] }
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/todayDownUser/list'),
+        name: 'TodayDownUser',
+        meta: { title: '下款', roles: { include: ['buyer-3', 'buyer-6', 'buyer-7', 'buyer-8'] }}
       }
     ]
   },
@@ -260,14 +279,14 @@ export const asyncRouterMap = [
     meta: {
       title: '统计',
       icon: 'fas fa-database',
-      roles: { include: ['buyer-4', 'buyer-5'] }
+      roles: { include: ['buyer-4', 'buyer-5', 'buyer-7', 'buyer-8'] }
     },
     children: [
       {
         path: 'list',
         component: () => import('@/views/todayBackUser/list'),
         name: 'TodayBackUser',
-        meta: { title: '回款', roles: { include: ['buyer-4', 'buyer-5'] }}
+        meta: { title: '回款', roles: { include: ['buyer-4', 'buyer-5', 'buyer-7', 'buyer-8'] }}
       }
     ]
   },
@@ -279,14 +298,14 @@ export const asyncRouterMap = [
     meta: {
       title: '统计',
       icon: 'fas fa-database',
-      roles: { include: ['buyer-1', 'buyer-5'] }
+      roles: { include: ['buyer-1', 'buyer-5', 'buyer-6', 'buyer-7'] }
     },
     children: [
       {
         path: 'list',
         component: () => import('@/views/todayRegisterUser/list'),
         name: 'TodayRegisterUser',
-        meta: { title: '注册', roles: { include: ['buyer-1', 'buyer-5'] }}
+        meta: { title: '注册', roles: { include: ['buyer-1', 'buyer-5', 'buyer-6', 'buyer-7'] }}
       }
     ]
   },

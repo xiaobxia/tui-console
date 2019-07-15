@@ -47,10 +47,12 @@ Vue.prototype.formatRoles = function(roles) {
       'channel': '渠道',
       'user': '客户',
       'buyer-1': '注册买家',
-      'buyer-2': '实名买家',
       'buyer-3': '下款买家',
       'buyer-4': '回款买家',
-      'buyer-5': '注册回款买家'
+      'buyer-5': '注册回款买家',
+      'buyer-6': '注册下款买家',
+      'buyer-7': '注册下款回款买家',
+      'buyer-8': '回款下款买家'
     }
     return rolesMap[value]
   } else {

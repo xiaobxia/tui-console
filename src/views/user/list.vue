@@ -45,19 +45,19 @@
             <el-option value="admin" label="管理员"/>
             <el-option value="test" label="测试"/>
             <el-option value="buyer-1" label="注册买家"/>
-            <el-option value="buyer-2" label="实名买家"/>
             <el-option value="buyer-3" label="下款买家"/>
             <el-option value="buyer-4" label="回款买家"/>
             <el-option value="buyer-5" label="注册回款买家"/>
             <el-option value="buyer-6" label="注册下款买家"/>
             <el-option value="buyer-7" label="注册下款回款买家"/>
+            <el-option value="buyer-8" label="回款下款买家"/>
           </el-select>
         </el-form-item>
         <el-form-item prop="name" label="登录名">
           <el-input v-model="dialogForm.name"/>
         </el-form-item>
         <el-form-item prop="password" label="登录密码">
-          <el-input v-model="dialogForm.password"/>
+          <el-input v-model="dialogForm.password_raw"/>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -73,7 +73,7 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 const dialogFormBase = {
   roles: '',
   name: '',
-  password: ''
+  password_raw: ''
 }
 export default {
   name: 'UserList',
