@@ -68,6 +68,11 @@
           <span>{{ scope.row.mobile || '-' }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="姓名">
+        <template slot-scope="scope">
+          <span>{{ scope.row.name || '-' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="来源">
         <template slot-scope="scope">
           <span>{{ formatUserSource(scope.row.source) }}</span>
