@@ -83,6 +83,14 @@
             <el-input v-model="dialogForm.today_register_count"/>
           </el-form-item>
         </el-col>
+        <el-col :span="6">
+          <el-form-item prop="type" label="类型：">
+            <el-select v-model="dialogForm.type" :style="{width: '100%'}" class="filter-item">
+              <el-option :value="1" label="甲方"/>
+              <el-option :value="2" label="平台"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-alert
         :closable="false"

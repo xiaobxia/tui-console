@@ -80,6 +80,16 @@ Vue.prototype.formatUserSource = function(status) {
   }
 }
 
+Vue.prototype.formatPingtai = function(type) {
+  if (type === 1) {
+    return '甲方'
+  } else if (type === 2) {
+    return '平台'
+  } else {
+    return '--'
+  }
+}
+
 Vue.prototype.formatStatusType = function(status) {
   if (status === 1) {
     return 'success'

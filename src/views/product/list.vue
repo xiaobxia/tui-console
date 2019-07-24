@@ -13,6 +13,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
+            <el-form-item prop="type" label="平台：">
+              <el-select v-model="searchForm.type" :style="{width: '100%'}" class="filter-item">
+                <el-option label="全部" value=""/>
+                <el-option :value="1" label="甲方"/>
+                <el-option :value="2" label="平台"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
             <el-form-item prop="name" label="产品名称：">
               <el-input v-model="searchForm.name"/>
             </el-form-item>
@@ -69,29 +78,9 @@
           <el-tag :type="formatStatusType(scope.row.status)">{{ formatStatus(scope.row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="历史点击次数">
+      <el-table-column align="center" label="平台">
         <template slot-scope="scope">
-          <span>{{ scope.row.history_click_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="今日点击次数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.today_click_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="历史注册数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.history_register_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="今日注册数">
-        <template slot-scope="scope">
-          <span>{{ scope.row.today_register_count }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="单价">
-        <template slot-scope="scope">
-          <span>{{ scope.row.unit_price }}</span>
+          <span>{{ formatPingtai(scope.row.type) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
@@ -138,7 +127,8 @@
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const searchFormBase = {
   name: '',
-  status: ''
+  status: '',
+  type: ''
 }
 const dialogFormBase = {
   name: '',

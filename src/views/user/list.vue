@@ -89,7 +89,7 @@ export default {
       dialogFormRules: {
         roles: [{ required: true, message: '请选择角色', trigger: 'blur' }],
         name: [{ required: true, message: '请输入登录名', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入登录密码', trigger: 'blur' }]
+        password_raw: [{ required: true, message: '请输入登录密码', trigger: 'blur' }]
       },
       listQuery: {
         current: 1,

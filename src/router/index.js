@@ -112,32 +112,32 @@ export const asyncRouterMap = [
   //     }
   //   ]
   // },
-  // {
-  //   path: '/product',
-  //   component: Layout,
-  //   redirect: '/product/list',
-  //   name: 'Product',
-  //   meta: {
-  //     title: '产品管理',
-  //     icon: 'fab fa-app-store-ios',
-  //     roles: { include: ['admin'] }
-  //   },
-  //   children: [
-  //     {
-  //       path: 'edit/:id',
-  //       component: () => import('@/views/product/edit'),
-  //       name: 'EditProduct',
-  //       meta: { title: '编辑产品', noCache: true, roles: { include: ['admin'] }},
-  //       hidden: true
-  //     },
-  //     {
-  //       path: 'list',
-  //       component: () => import('@/views/product/list'),
-  //       name: 'ProductList',
-  //       meta: { title: '产品列表', roles: { include: ['admin'] }}
-  //     }
-  //   ]
-  // },
+  {
+    path: '/product',
+    component: Layout,
+    redirect: '/product/list',
+    name: 'Product',
+    meta: {
+      title: '产品管理',
+      icon: 'fab fa-app-store-ios',
+      roles: { include: ['admin'] }
+    },
+    children: [
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/product/edit'),
+        name: 'EditProduct',
+        meta: { title: '编辑产品', noCache: true, roles: { include: ['admin'] }},
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/product/list'),
+        name: 'ProductList',
+        meta: { title: '产品列表', roles: { include: ['admin'] }}
+      }
+    ]
+  },
   // {
   //   path: '/statistics',
   //   component: Layout,
