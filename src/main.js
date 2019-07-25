@@ -80,11 +80,21 @@ Vue.prototype.formatUserSource = function(status) {
   }
 }
 
-Vue.prototype.formatPingtai = function(type) {
+Vue.prototype.formatProductType = function(type) {
+  if (type === 1) {
+    return '现金贷'
+  } else if (type === 2) {
+    return '贷超'
+  } else {
+    return '--'
+  }
+}
+
+Vue.prototype.formatPlatform = function(type) {
   if (type === 1) {
     return '甲方'
   } else if (type === 2) {
-    return '平台'
+    return '乙方'
   } else {
     return '--'
   }

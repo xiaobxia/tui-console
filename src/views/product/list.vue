@@ -13,14 +13,25 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item prop="type" label="平台：">
+            <el-form-item prop="type" label="类型：">
               <el-select v-model="searchForm.type" :style="{width: '100%'}" class="filter-item">
                 <el-option label="全部" value=""/>
-                <el-option :value="1" label="甲方"/>
-                <el-option :value="2" label="平台"/>
+                <el-option :value="1" label="现金贷"/>
+                <el-option :value="2" label="贷超"/>
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="6">
+            <el-form-item prop="platform" label="平台：">
+              <el-select v-model="searchForm.platform" :style="{width: '100%'}" class="filter-item">
+                <el-option label="全部" value=""/>
+                <el-option :value="1" label="甲方"/>
+                <el-option :value="2" label="乙方"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="12">
           <el-col :span="6">
             <el-form-item prop="name" label="产品名称：">
               <el-input v-model="searchForm.name"/>
@@ -78,9 +89,14 @@
           <el-tag :type="formatStatusType(scope.row.status)">{{ formatStatus(scope.row.status) }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="类型">
+        <template slot-scope="scope">
+          <span>{{ formatProductType(scope.row.type) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="平台">
         <template slot-scope="scope">
-          <span>{{ formatPingtai(scope.row.type) }}</span>
+          <span>{{ formatPlatform(scope.row.platform) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
