@@ -309,5 +309,24 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/list',
+    name: 'Article',
+    meta: {
+      title: '文章',
+      icon: 'fas fa-database',
+      roles: { include: [] }
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/article/list'),
+        name: 'ArticleList',
+        meta: { title: '文章', roles: { include: [] }}
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
