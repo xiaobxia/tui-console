@@ -61,7 +61,7 @@ module.exports = {
     assetsPathInCss: '../../',
     // assetsPublicPath: './',
     assetsPublicPath: './',
-    cdnPublicPath: 'http://tuiconsolecdn.xiaobxia.com/',
+    cdnPublicPath: 'http://tuiconsolecdn.menghe.top/',
     ifCdn: true,
 
     /**
