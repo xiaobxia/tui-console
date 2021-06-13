@@ -406,7 +406,7 @@ export default {
       if (row.channel_platform === 'h5') {
         query.h5 = 'true'
       }
-      return `http://localhost:3001/#/?${qs.stringify(query)}`
+      return `http://tuimobile.menghe.top/#/?${qs.stringify(query)}`
     }
   }
 }
