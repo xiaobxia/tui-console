@@ -176,6 +176,25 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/appIcon',
+    component: Layout,
+    redirect: '/appIcon/registerLog',
+    name: 'AppIcon',
+    meta: {
+      title: '图标',
+      icon: 'fas fa-database',
+      roles: { include: ['admin'] }
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/appIcon/index'),
+        name: 'AppIconIndex',
+        meta: { title: '图标', roles: { include: ['admin'] }}
+      }
+    ]
+  },
   // {
   //   path: '/allUser',
   //   component: Layout,

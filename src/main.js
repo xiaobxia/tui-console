@@ -17,11 +17,21 @@ import './mock' // simulation data
 
 import * as filters from './filters' // global filters
 import Http from '@/utils/httpUtil.js'
+import printUtil from '@/utils/printUtil.js'
 
 Vue.use(Element, {
   i18n: (key, value) => i18n.t(key, value)
 })
 
+function registerUtil(util) {
+  for (const key in util) {
+    if (util.hasOwnProperty(key)) {
+      Vue.prototype['$' + key] = util[key]
+    }
+  }
+}
+// 打印工具
+registerUtil(printUtil)
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

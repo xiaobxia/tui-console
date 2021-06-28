@@ -5,6 +5,19 @@
  @import './sidebar.scss';
 @import './btn.scss';
 
+@font-face {
+  font-family: "mt";
+  src: url('./sdkr.ttf') format('svg'); /* iOS 4.1- */
+}
+
+.mt {
+  font-family: "mt" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
