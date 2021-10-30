@@ -31,6 +31,7 @@
     "screenfull": "3.3.3",
     "showdown": "1.8.6",
     "sortablejs": "1.7.0",
+    "superagent": "^6.1.0",
     "tui-editor": "1.2.7",
     "uuid": "^3.3.2",
     "vue": "2.5.17",

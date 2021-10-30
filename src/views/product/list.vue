@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
+      <el-form ref="searchForm" :model="searchForm" size="small" label-position="left" label-width="100px">
         <el-row :gutter="12">
           <el-col :span="6">
             <el-form-item prop="status" label="上架状态：">
@@ -13,41 +13,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item prop="type" label="类型：">
-              <el-select v-model="searchForm.type" :style="{width: '100%'}" class="filter-item">
-                <el-option label="全部" value=""/>
-                <el-option :value="1" label="现金贷"/>
-                <el-option :value="2" label="贷超"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item prop="platform" label="平台：">
-              <el-select v-model="searchForm.platform" :style="{width: '100%'}" class="filter-item">
-                <el-option label="全部" value=""/>
-                <el-option :value="1" label="甲方"/>
-                <el-option :value="2" label="乙方"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12">
-          <el-col :span="6">
             <el-form-item prop="name" label="产品名称：">
               <el-input v-model="searchForm.name"/>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-button class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
+            <el-button size="small" class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
             </el-button>
             <el-button
               :loading="searchLoading"
               class="filter-item"
+              size="small"
               icon="el-icon-search"
               type="primary"
               @click="handleSearch">搜索
             </el-button>
-            <el-button class="filter-item" icon="el-icon-plus" type="primary" @click="handleCreate">新增</el-button>
+            <el-button size="small" class="filter-item" icon="el-icon-plus" type="primary" @click="handleCreate">新增</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -74,11 +55,6 @@
           <span>{{ formatShiFou(scope.row.is_recommend) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="是否活动">
-        <template slot-scope="scope">
-          <span>{{ formatShiFou(scope.row.is_activity) }}</span>
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="添加时间" width="200">
         <template slot-scope="scope">
           <span>{{ formatDateTime(scope.row.create_at) }}</span>
@@ -87,16 +63,6 @@
       <el-table-column align="center" label="状态">
         <template slot-scope="scope">
           <el-tag :type="formatStatusType(scope.row.status)">{{ formatStatus(scope.row.status) }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="类型">
-        <template slot-scope="scope">
-          <span>{{ formatProductType(scope.row.type) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="平台">
-        <template slot-scope="scope">
-          <span>{{ formatPlatform(scope.row.platform) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
@@ -109,38 +75,20 @@
         </template>
       </el-table-column>
     </el-table>
-
     <pagination
       v-show="listTotal>0"
       :total="listTotal"
       :page.sync="listQuery.current"
       :limit.sync="listQuery.pageSize"
       @pagination="queryList"/>
-    <el-dialog :visible.sync="dialogFormVisible" title="添加" @closed="handleCancel">
-      <el-form ref="dialogForm" :model="dialogForm" :rules="dialogFormRules" label-position="right" label-width="120px">
-        <el-form-item prop="name" label="产品名称">
-          <el-input v-model="dialogForm.name"/>
-        </el-form-item>
-        <el-form-item prop="url" label="链接">
-          <el-input v-model="dialogForm.url"/>
-        </el-form-item>
-        <el-form-item prop="unit_price" label="单价">
-          <el-input v-model="dialogForm.unit_price"/>
-        </el-form-item>
-        <el-form-item prop="introduction" label="简介">
-          <el-input v-model="dialogForm.introduction"/>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取消</el-button>
-        <el-button :loading="loading" type="primary" @click="handleConfirm">确定</el-button>
-      </span>
-    </el-dialog>
+    <add-dialog ref="addDialog" @ok="reQueryList"/>
   </div>
 </template>
 
 <script>
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
+import AddDialog from './components/addDialog'
+
 const searchFormBase = {
   name: '',
   status: '',
@@ -154,7 +102,10 @@ const dialogFormBase = {
 }
 export default {
   name: 'ProductList',
-  components: { Pagination },
+  components: {
+    Pagination,
+    AddDialog
+  },
   data() {
     return {
       loading: false,
@@ -184,9 +135,16 @@ export default {
     initPage() {
       this.queryList()
     },
+    reQueryList() {
+      this.listQuery = {
+        current: 1,
+        pageSize: 20
+      }
+      this.queryList()
+    },
     queryList() {
       this.listLoading = true
-      this.$http.get('product/getProducts', {
+      this.$http.get('product/getProductsByPage', {
         ...this.searchForm,
         ...this.listQuery
       }).then(response => {
@@ -233,7 +191,7 @@ export default {
       this.dialogForm = Object.assign({}, dialogFormBase)
     },
     handleCreate() {
-      this.dialogFormVisible = true
+      this.$refs.addDialog.open()
     },
     handleConfirm() {
       this.$refs.dialogForm.validate(valid => {

@@ -176,25 +176,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/appIcon',
-    component: Layout,
-    redirect: '/appIcon/registerLog',
-    name: 'AppIcon',
-    meta: {
-      title: '图标',
-      icon: 'fas fa-database',
-      roles: { include: ['admin'] }
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/appIcon/index'),
-        name: 'AppIconIndex',
-        meta: { title: '图标', roles: { include: ['admin'] }}
-      }
-    ]
-  },
   // {
   //   path: '/allUser',
   //   component: Layout,
@@ -328,24 +309,49 @@ export const asyncRouterMap = [
   //     }
   //   ]
   // },
-  // {
-  //   path: '/article',
-  //   component: Layout,
-  //   redirect: '/article/list',
-  //   name: 'Article',
-  //   meta: {
-  //     title: '文章',
-  //     icon: 'fas fa-database',
-  //     roles: { include: [] }
-  //   },
-  //   children: [
-  //     {
-  //       path: 'list',
-  //       component: () => import('@/views/article/list'),
-  //       name: 'ArticleList',
-  //       meta: { title: '文章', roles: { include: [] }}
-  //     }
-  //   ]
-  // },
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log/channelView',
+    name: 'Log',
+    meta: {
+      title: '日志',
+      icon: 'fas fa-database',
+      roles: { include: ['admin'] }
+    },
+    children: [
+      {
+        path: 'channelView',
+        component: () => import('@/views/log/channelView/list'),
+        name: 'LogChannelView',
+        meta: { title: '渠道浏览', roles: { include: ['admin'] }}
+      },
+      {
+        path: 'userClick',
+        component: () => import('@/views/log/userClick/list'),
+        name: 'LogUserClick',
+        meta: { title: '用户点击', roles: { include: ['admin'] }}
+      }
+    ]
+  },
+  {
+    path: '/appIcon',
+    component: Layout,
+    redirect: '/appIcon/registerLog',
+    name: 'AppIcon',
+    meta: {
+      title: '图标',
+      icon: 'fas fa-database',
+      roles: { include: ['admin'] }
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/appIcon/index'),
+        name: 'AppIconIndex',
+        meta: { title: '图标', roles: { include: ['admin'] }}
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

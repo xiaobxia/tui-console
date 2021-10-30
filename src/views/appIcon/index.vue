@@ -70,11 +70,11 @@ export default {
   .b-t {
     position: absolute;
     width: 100%;
-    bottom: 100px;
+    bottom: 80px;
     text-align: center;
     font-size: 140px;
-    letter-spacing: 1em;
-    text-indent: 1em;
+    letter-spacing: 0.6em;
+    text-indent: 0.6em;
     color: rgb(255, 127, 0);
     font-weight: bolder;
   }

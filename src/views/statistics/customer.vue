@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-form ref="searchForm" :model="searchForm" label-position="left" label-width="100px">
+      <el-form ref="searchForm" :model="searchForm" size="small" label-position="left" label-width="100px">
         <el-row :gutter="12">
           <el-col :span="6">
             <el-form-item prop="status" label="激活状态：">
@@ -33,11 +33,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-button class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
+            <el-button size="small" class="filter-item" icon="el-icon-refresh" type="primary" @click="handleResetSearch">重置
             </el-button>
             <el-button
               :loading="searchLoading"
               class="filter-item"
+              size="small"
               icon="el-icon-search"
               type="primary"
               @click="handleSearch">搜索
