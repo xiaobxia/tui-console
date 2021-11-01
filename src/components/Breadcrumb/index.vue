@@ -35,12 +35,12 @@ export default {
       })
       const first = matched[0]
       if (first && first.name.trim().toLocaleLowerCase() !== 'Dashboard'.toLocaleLowerCase()) {
-        matched = [{ path: '/dashboard', meta: { title: '主页' }}].concat(matched)
+        matched = [{ path: '/dashboard/index', meta: { title: 'dashboard' }}].concat(matched)
       }
       this.levelList = matched
     },
     pathCompile(path) {
-      // To solve this problem https://github.com/PanJiaChen/tui-console/issues/561
+      // To solve this problem https://github.com/PanJiaChen/vue-admin-cli/issues/561
       const { params } = this.$route
       var toPath = pathToRegexp.compile(path)
       return toPath(params)

@@ -24,11 +24,11 @@ const seen = new Set()
 const nameLength = 4
 
 const webpackConfig = merge(baseWebpackConfig, {
-  mode: 'production',
+  mode: "production",
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
-      extract: true,
+      extract: false,
       usePostCSS: true
     })
   },
@@ -37,30 +37,40 @@ const webpackConfig = merge(baseWebpackConfig, {
     path: config.build.assetsRoot,
     // filename: utils.assetsPath('js/[name].[chunkhash:8].js'),
     // chunkFilename: utils.assetsPath('js/[name].[chunkhash:8].js')
-    filename: ifCdn ? utils.assetsPath('[name].[chunkhash:8].js'):utils.assetsPath('js/[name].[chunkhash:8].js'),
-    chunkFilename: ifCdn ? utils.assetsPath('[name].[chunkhash:8].js'):utils.assetsPath('js/[name].[chunkhash:8].js')
+    filename: ifCdn
+      ? utils.assetsPath("[name].[chunkhash:8].js")
+      : utils.assetsPath("js/[name].[chunkhash:8].js"),
+    chunkFilename: ifCdn
+      ? utils.assetsPath("[name].[chunkhash:8].js")
+      : utils.assetsPath("js/[name].[chunkhash:8].js")
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env
+      "process.env": env
     }),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /^\.\/(zh-cn)$/i),
     // extract css into its own file
     new MiniCssExtractPlugin({
-      filename: ifCdn ? utils.assetsPath('[name].[contenthash:8].css'):utils.assetsPath('css/[name].[contenthash:8].css'),
-      chunkFilename: ifCdn ? utils.assetsPath('[name].[contenthash:8].css'):utils.assetsPath('css/[name].[contenthash:8].css')
+      filename: ifCdn
+        ? utils.assetsPath("[name].[contenthash:8].css")
+        : utils.assetsPath("css/[name].[contenthash:8].css"),
+      chunkFilename: ifCdn
+        ? utils.assetsPath("[name].[contenthash:8].css")
+        : utils.assetsPath("css/[name].[contenthash:8].css")
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: config.build.index,
-      template: 'index.html',
+      template: "index.html",
       inject: true,
-      favicon: resolve('favicon.ico'),
-      title: 'tui-console',
+      favicon: resolve("favicon.ico"),
+      title: "big-data-cockpit",
       templateParameters: {
-        BASE_URL: config.build.assetsPublicPath + config.build.assetsSubDirectory,
+        BASE_URL:
+          config.build.assetsPublicPath + config.build.assetsSubDirectory
       },
       minify: {
         removeComments: true,
@@ -80,18 +90,18 @@ const webpackConfig = merge(baseWebpackConfig, {
     // keep chunk.id stable when chunk has no name
     new webpack.NamedChunksPlugin(chunk => {
       if (chunk.name) {
-        return chunk.name
+        return chunk.name;
       }
-      const modules = Array.from(chunk.modulesIterable)
+      const modules = Array.from(chunk.modulesIterable);
       if (modules.length > 1) {
-        const hash = require('hash-sum')
-        const joinedHash = hash(modules.map(m => m.id).join('_'))
-        let len = nameLength
-        while (seen.has(joinedHash.substr(0, len))) len++
-        seen.add(joinedHash.substr(0, len))
-        return `chunk-${joinedHash.substr(0, len)}`
+        const hash = require("hash-sum");
+        const joinedHash = hash(modules.map(m => m.id).join("_"));
+        let len = nameLength;
+        while (seen.has(joinedHash.substr(0, len))) len++;
+        seen.add(joinedHash.substr(0, len));
+        return `chunk-${joinedHash.substr(0, len)}`;
       } else {
-        return modules[0].id
+        return modules[0].id;
       }
     }),
     // keep module.id stable when vender modules does not change
@@ -99,42 +109,48 @@ const webpackConfig = merge(baseWebpackConfig, {
     // copy custom static assets
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../static'),
+        from: path.resolve(__dirname, "../static"),
         to: config.build.assetsSubDirectory,
-        ignore: ['.*']
+        ignore: [".*"]
       }
     ])
   ],
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      chunks: "all",
       cacheGroups: {
         libs: {
-          name: 'chunk-libs',
+          name: "chunk-libs",
           test: /[\\/]node_modules[\\/]/,
           priority: 10,
-          chunks: 'initial' // 只打包初始时依赖的第三方
+          chunks: "initial" // 只打包初始时依赖的第三方
         },
         elementUI: {
-          name: 'chunk-elementUI', // 单独将 elementUI 拆包
+          name: "chunk-elementUI", // 单独将 elementUI 拆包
           priority: 20, // 权重要大于 libs 和 app 不然会被打包进 libs 或者 app
           test: /[\\/]node_modules[\\/]element-ui[\\/]/
         },
         commons: {
-          name: 'chunk-commons',
-          test: resolve('src/components'), // 可自定义拓展你的规则
+          name: "chunk-commons",
+          test: resolve("src/components"), // 可自定义拓展你的规则
           minChunks: 3, // 最小公用次数
           priority: 5,
           reuseExistingChunk: true
         }
       }
     },
-    runtimeChunk: 'single',
+    runtimeChunk: "single",
     minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {
           mangle: {
             safari10: true
+          },
+          compress: {
+            warnings: false,
+            drop_debugger: true,
+            // 只有发布环境没有console
+            drop_console: env.ENV_CONFIG === "release"
           }
         },
         sourceMap: config.build.productionSourceMap,
@@ -146,7 +162,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       new OptimizeCSSAssetsPlugin()
     ]
   }
-})
+});
 
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')

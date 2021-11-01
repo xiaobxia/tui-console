@@ -1,54 +1,76 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <div class="title-container">
-        <h3 class="title">管理后台</h3>
+    <div class="navbar">
+      <div class="right-wrap">
+        <div class="right-item">
+          <a href="https://www.3tgroup.cn/index.html" target="_blank">官网首页</a>
+        </div>
+        <div class="right-item">
+          <a
+            target="_blank"
+            class="btn btn-sm btn-primary btn-emphasis"
+            href="http://app.3tlife.cn/3t-wechat/web/wechat/share/download"
+          >下载应用</a>
+        </div>
       </div>
-      <el-form-item prop="username">
-        <span class="icon-container">
-          <i class="fas fa-user" />
-        </span>
-        <el-input
-          v-model="loginForm.username"
-          placeholder="登录名"
-          name="username"
-          type="text"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item prop="password">
-        <span class="icon-container">
-          <i class="fas fa-key"/>
-        </span>
-        <el-input
-          :type="passwordType"
-          v-model="loginForm.password"
-          placeholder="登录密码"
-          name="password"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin" />
-        <span class="show-pwd" @click="showPwd">
-          <i :class="['far', passwordType?'fa-eye':'fa-eye-slash']"/>
-        </span>
-      </el-form-item>
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-    </el-form>
+      <div class="logo-wrap">
+        <img src="../../assets/logo.jpg" alt="">
+        <span>三六五生活</span>
+      </div>
+    </div>
+    <div class="login-wrap">
+      <el-row>
+        <el-col :span="12">
+          <div class="login-l-img">
+            <img src="../../assets/login-l.jpg" alt="">
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="form-wrap">
+            <el-form
+              ref="loginForm"
+              :model="loginForm"
+              :rules="loginRules"
+              class="login-form"
+              label-position="left"
+            >
+              <div class="title-img">
+                <span>品质生活,全程管家</span>
+              </div>
+              <div class="sub-text">
+                欢迎来到三六五生活服务平台，请登录！
+              </div>
+              <el-form-item prop="username">
+                <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入账号"/>
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password" placeholder="请输入密码" @keyup.enter.native="handleLogin" />
+              </el-form-item>
+              <div>
+                <el-button :loading="loading" class="login-btn" type="primary" @click="handleLogin">登 &nbsp;&nbsp;&nbsp; 录</el-button>
+              </div>
+            </el-form>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="copy-right">
+      <div>版权所有 © 三六五集团公司 浙ICP证150175号</div>
+    </div>
   </div>
 </template>
 
 <script>
-
+import md5 from 'md5'
 export default {
   name: 'Login',
-  components: {},
   data() {
     const validatePassword = (rule, value, callback) => {
-      // if (value.length < 6) {
-      //   callback(new Error('The password can not be less than 6 digits'))
-      // } else {
-      //   callback()
-      // }
-      callback()
+      if (value.length < 1) {
+        callback(new Error('密码不能为空'))
+      } else {
+        callback()
+      }
     }
     return {
       loginForm: {
@@ -56,43 +78,52 @@ export default {
         password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [
+          { required: true, trigger: 'blur', message: '账号不能为空！' }
+        ],
+        password: [
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ]
       },
       passwordType: 'password',
+      capsTooltip: false,
       loading: false,
-      redirect: undefined
+      showDialog: false,
+      redirect: undefined,
+      otherQuery: {}
     }
   },
   watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
   },
   created() {
+    // 清除所有缓存
+    sessionStorage.clear()
+    localStorage.clear()
   },
-  destroyed() {
+  mounted() {
   },
+  destroyed() { },
   methods: {
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
+    getParams() {
+      return {
+        username: this.loginForm.username,
+        password: md5(this.loginForm.password)
       }
     },
+    // 登录
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+          this.$store.dispatch('LoginByUsername', this.getParams()).then(() => {
+            this.$router.replace({
+              name: 'UserCenterUserList'
+            })
             this.loading = false
-            // 跳转来源或主页
-            this.$router.push({ path: this.redirect || '/' })
-          }).catch(() => {
+            // 侧边菜单打开
+            this.$store.dispatch('setSideBar', true)
+          }).catch((err) => {
+            console.log(err)
             this.loading = false
           })
         } else {
@@ -100,109 +131,133 @@ export default {
           return false
         }
       })
+    },
+    getOtherQuery(query) {
+      return Object.keys(query).reduce((acc, cur) => {
+        if (cur !== 'redirect') {
+          acc[cur] = query[cur]
+        }
+        return acc
+      }, {})
     }
   }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
-  $bg:#283443;
-  $light_gray:#eee;
-  $cursor: #fff;
-
-  @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-    .login-container .el-input input{
-      color: $cursor;
-      &::first-line {
-        color: $light_gray;
-      }
-    }
-  }
-
-  /* reset element-ui css */
+<style lang="scss" scoped>
   .login-container {
-    .el-input {
-      display: inline-block;
-      height: 47px;
-      width: 85%;
-      input {
-        background: transparent;
-        border: 0px;
-        -webkit-appearance: none;
-        border-radius: 0px;
-        padding: 12px 5px 12px 15px;
-        color: $light_gray;
-        height: 47px;
-        caret-color: $cursor;
-        &:-webkit-autofill {
-          -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: $cursor !important;
-        }
+    height: 100vh;
+    background-color: #fff;
+  }
+  .navbar {
+    color: #5E6166;
+    border-bottom: 1px solid #E6E9F0;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .04);
+    z-index: 1;
+    height: 56px;
+    line-height: 56px;
+    background-color: #fff;
+    padding: 0 24px;
+    .logo-wrap {
+      height: 56px;
+      font-size: 18px;
+      img {
+        height: 55px;
+      }
+      span {
+        vertical-align: top;
       }
     }
-    .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      color: #454545;
+  }
+  .copy-right {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 25px 10px 25px 10px;
+    color: #8F9BB2;
+    text-align: center;
+  }
+  .right-wrap {
+    color: #7A8599;
+    float: right!important;
+    .right-item {
+      display: inline-block;
+      a {
+        padding: 0 15px;
+      }
+      .btn {
+        display: block;
+        margin: 12px 24px 12px 18px;
+        padding: 5px 16px;
+        border: none;
+        font-size: 14px;
+        line-height: 22px;
+        color: #FFF;
+        border-radius: 2px;
+        background: linear-gradient(270deg, rgba(82, 114, 244, 1) 0%, rgba(0, 170, 231, 1) 100%) rgba(0, 170, 231, .31);
+        background-color: rgba(0, 170, 231, .31)!important;
+        background-blend-mode: saturation;
+      }
     }
   }
-</style>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
-
-.login-container {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  background-color: $bg;
-  .login-form {
+  .login-wrap {
     position: absolute;
     left: 0;
     right: 0;
-    width: 520px;
-    max-width: 100%;
-    padding: 35px 35px 15px 35px;
-    margin: 120px auto;
-  }
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 1024px;
+    height: 560px;
+    background-color: #fff;
+    border: 1px solid #EEE;
+    box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, .08);
+    text-align: center;
+    .login-l-img {
+      position: relative;
+      overflow: hidden;
+      height: 560px;
+      img {
+        position: relative;
+        left: -50px;
+        height: 100%;
       }
     }
-  }
-  .icon-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-  }
-  .title-container {
-    position: relative;
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
+    .form-wrap {
+      margin: 0 56px;
+    }
+    .title-img {
+      margin-top: 92px;
+      color: $original-theme;
+      font-size: 32px;
+      font-weight: 400;
       text-align: center;
-      font-weight: bold;
+      line-height: 48px;
+    }
+    .sub-text {
+      margin-top: 12px;
+      margin-bottom: 64px;
+      color: #999;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 22px;
+    }
+    .login-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px 0;
+      border: none;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #FFF;
+      border-radius: 2px;
+      background: linear-gradient(270deg, rgba(82, 114, 244, 1) 0%, rgba(0, 170, 231, 1) 100%) rgba(0, 170, 231, .31);
+      background-color: rgba(0, 170, 231, .31);
+      background-blend-mode: saturation;
+      border-color: rgba(25, 137, 250, .4);
     }
   }
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-}
 </style>

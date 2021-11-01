@@ -1,27 +1,39 @@
+// 兼容ie
+// import 'babel-polyfill'
 import Vue from 'vue'
-import moment from 'moment'
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-import '../static/web-fonts-with-css/css/fontawesome-all.css'
-import './theme/index.css'
-import Element from 'element-ui'
 
+// 平台组件样式
+import ElementUI from 'element-ui'
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
+import '@/styles/theme/project-theme.scss'
 
 import App from './App'
 import router from './router'
 import store from './store'
 
-import i18n from './lang' // Internationalization
+// import i18n from './lang' // Internationalization
 import './permission' // permission control
-import './mock' // simulation data
+import Http from '@/utils/httpUtil'
+import numberUtil from '@/utils/numberUtil'
+import fileUtil from '@/utils/fileUtil'
+import typeValue from '@/common/typeValue'
+import inputFilter from '@/common/inputFilter'
+import dataFormat from '@/common/dataFormat'
+import userPerm from '@/common/userPerm'
+import sysSetting from '@/setting'
 
-import * as filters from './filters' // global filters
-import Http from '@/utils/httpUtil.js'
-import printUtil from '@/utils/printUtil.js'
+// 指令部分
+import Clipboard from '@/directive/clipboard'
 
-Vue.use(Element, {
-  i18n: (key, value) => i18n.t(key, value)
+Vue.use(ElementUI, {
+  // size: 'small'
 })
+
+Vue.use(Clipboard)
+
+// HTTP工具
+Vue.prototype.$http = Http
 
 function registerUtil(util) {
   for (const key in util) {
@@ -30,130 +42,47 @@ function registerUtil(util) {
     }
   }
 }
-// 打印工具
-registerUtil(printUtil)
-// register global utility filters.
-Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-})
+
+// 数字工具
+registerUtil(numberUtil)
+// 文件工具
+registerUtil(fileUtil)
+// 枚举常量
+registerUtil(typeValue)
+// 输入过滤
+registerUtil(inputFilter)
+// 数据格式化
+registerUtil(dataFormat)
+// 用户权限
+registerUtil(userPerm)
+
+Vue.prototype.$getDocumentHtml = function() {
+  return document.getElementsByTagName('html')[0]
+}
+
+Vue.prototype.$deepClone = function(data) {
+  return JSON.parse(JSON.stringify(data))
+}
+
+Vue.prototype.$sysSetting = sysSetting
+
+// 全局日志方法
+Vue.prototype.$oLog = function(content, detail) {
+  return store.dispatch('operationLog', {
+    content: content || '',
+    detail: detail || ''
+  })
+}
+
+// 全局数据
+window.$nowYear = new Date().getFullYear()
 
 Vue.config.productionTip = false
-Vue.prototype.$http = Http
-Vue.prototype.formatDateTime = function(str) {
-  if (str) {
-    return moment(str).format('YYYY-MM-DD HH:mm:ss')
-  } else {
-    return '-'
-  }
-}
-
-Vue.prototype.formatRoles = function(roles) {
-  if (roles && roles.length) {
-    const value = roles[0]
-    const rolesMap = {
-      'superAdmin': '超级管理员',
-      'admin': '管理员',
-      'test': '测试',
-      'channel': '渠道',
-      'user': '客户',
-      'buyer-1': '注册买家',
-      'buyer-3': '下款买家',
-      'buyer-4': '回款买家',
-      'buyer-5': '注册回款买家',
-      'buyer-6': '注册下款买家',
-      'buyer-7': '注册下款回款买家',
-      'buyer-8': '回款下款买家'
-    }
-    return rolesMap[value]
-  } else {
-    return '-'
-  }
-}
-
-Vue.prototype.formatStatus = function(status) {
-  if (status === 1) {
-    return '已上架'
-  } else if (status === 2) {
-    return '已下架'
-  } else {
-    return '未知'
-  }
-}
-
-Vue.prototype.formatUserSource = function(status) {
-  if (status === 'xjd') {
-    return '现金贷'
-  } else if (status === 'dc') {
-    return '贷超'
-  } else {
-    return '--'
-  }
-}
-
-Vue.prototype.formatProductType = function(type) {
-  if (type === 1) {
-    return '现金贷'
-  } else if (type === 2) {
-    return '贷超'
-  } else {
-    return '--'
-  }
-}
-
-Vue.prototype.formatPlatform = function(type) {
-  if (type === 1) {
-    return '甲方'
-  } else if (type === 2) {
-    return '乙方'
-  } else {
-    return '--'
-  }
-}
-
-Vue.prototype.formatStatusType = function(status) {
-  if (status === 1) {
-    return 'success'
-  } else if (status === 2) {
-    return 'info'
-  } else {
-    return 'danger'
-  }
-}
-
-Vue.prototype.formatIfContact = function(status) {
-  if (status === true) {
-    return 'success'
-  } else if (status === false) {
-    return 'info'
-  } else {
-    return 'danger'
-  }
-}
-
-Vue.prototype.formatShiFouType = function(status) {
-  if (status === true) {
-    return 'success'
-  } else if (status === false) {
-    return 'info'
-  } else {
-    return 'danger'
-  }
-}
-
-Vue.prototype.formatShiFou = function(status) {
-  if (status === true) {
-    return '是'
-  } else if (status === false) {
-    return '否'
-  } else {
-    return '-'
-  }
-}
 
 new Vue({
   el: '#app',
   router,
   store,
-  i18n,
+  // i18n,
   render: h => h(App)
 })

@@ -25,7 +25,6 @@ export default {
         return {
           is: 'a',
           href: url,
-          target: '_blank',
           rel: 'noopener'
         }
       }

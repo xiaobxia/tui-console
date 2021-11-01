@@ -4,12 +4,10 @@
       :show-timeout="200"
       :default-active="$route.path"
       :collapse="isCollapse"
+      unique-opened
       mode="vertical"
-      background-color="#304156"
-      text-color="#bfcbd9"
-      active-text-color="#409EFF"
     >
-      <sidebar-item v-for="route in permission_routers" :key="route.path" :item="route" :base-path="route.path"/>
+      <sidebar-item v-for="(route, index) in routers" :key="route.path + index" :item="route" :base-path="route.basePath" :is-collapse="isCollapse"/>
     </el-menu>
   </el-scrollbar>
 </template>
@@ -27,6 +25,21 @@ export default {
     ]),
     isCollapse() {
       return !this.sidebar.opened
+    },
+    routers() {
+      const basePath = this.$route.matched[0].path
+      const res = []
+      this.permission_routers.forEach((v) => {
+        if (!v.hidden && v.path && v.path === basePath) {
+          v.children = v.children || []
+          v.children.forEach((item) => {
+            item.basePath = `${basePath}/${item.path}`
+            res.push(item)
+          })
+        }
+      })
+      console.log('this.permission_routers', res)
+      return res
     }
   }
 }

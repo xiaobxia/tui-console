@@ -2,48 +2,71 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
-import storageUtil from '@/utils/storageUtil'
-import permissionUtil from '@/utils/permission'
+import authUtil from '@/utils/authUtil'
+import appCommonUtil from '@/utils/appCommonUtil'
+import setting from '@/setting'
 
 NProgress.configure({ showSpinner: false })
 
-router.beforeEach((to, from, next) => {
+const beforeEach = (to, from, next) => {
   NProgress.start()
-  console.log('beforeEach')
-  const userInfo = storageUtil.getUserInfo()
-  console.log(userInfo)
-  if (userInfo.isLogin === true) {
-    // 登入了还去登录，直接转首页
-    if (to.path === '/login') {
-      next({ path: '/' })
-      NProgress.done()
+  const token = authUtil.getToken()
+  const userInfo = authUtil.getUser()
+  if (token && userInfo._id) {
+    // 没有生成过
+    if (store.getters.ifAddRouters) {
+      next()
     } else {
-      // 没有生成过
-      if (store.getters.addRouters.length === 0) {
-        store.dispatch('GenerateRoutes', { roles: userInfo.roles }).then(() => {
-          console.log('生成菜单')
+      // 是否开启权限的判断
+      if (setting.permission) {
+        store.dispatch('generatePermRoutes', {
+          userId: userInfo.uid
+        }).then(() => {
           // router里面原本只有基础的路由，是后来添加的有权限的路由
           router.addRoutes(store.getters.addRouters)
           next({ ...to, replace: true })
         })
-      }
-      if (permissionUtil.checkPermission(userInfo.roles, to)) {
-        next()
       } else {
-        next({ path: '/401', replace: true, query: { noGoBack: true }})
+        store.dispatch('generateRoutes', { roles: [2] }).then(() => {
+          router.addRoutes(store.getters.addRouters)
+          next({ ...to, replace: true })
+        })
       }
     }
+    // 没有必要检查了，没有的会直接404
+    // if (permissionUtil.checkPermission(userInfo.roles, to)) {
+    // } else {
+    //   next({ path: '/401', replace: true, query: { noGoBack: true }})
+    // }
   } else {
     // 直接进入
     if (to.meta && to.meta.auth === false) {
       next()
     } else {
-      next(`/login?redirect=${to.path}`)
       NProgress.done()
+      // 开发环境跳本项目
+      next(`/login`)
     }
+  }
+}
+
+router.beforeEach((to, from, next) => {
+  NProgress.start()
+  const queryToken = to.query.token
+  if (queryToken) {
+    // 单点登录，token从url传入
+    window._token = queryToken
+    appCommonUtil.setLoginToken(queryToken)
+    store.dispatch('getUserInfo').then((data) => {
+      // 设置记录
+      beforeEach(to, from, next)
+    })
+  } else {
+    // 正常情况下
+    beforeEach(to, from, next)
   }
 })
 
-router.afterEach(() => {
+router.afterEach((to, from) => {
   NProgress.done() // finish progress bar
 })

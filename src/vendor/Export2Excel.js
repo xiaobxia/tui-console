@@ -204,11 +204,3 @@ export function export_json_to_excel({
     type: "application/octet-stream"
   }), `${filename}.${bookType}`);
 }
-
-
-const excel = {
-  export_json_to_excel,
-  export_table_to_excel
-}
-
-export default excel

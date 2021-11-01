@@ -131,7 +131,7 @@ export default {
   z-index: -9999;
 }
 .drop{
-  border: 2px dashed #bbb;
+  border: 2px dashed #DCDFE6;
   width: 600px;
   height: 160px;
   line-height: 160px;
@@ -139,7 +139,7 @@ export default {
   font-size: 24px;
   border-radius: 5px;
   text-align: center;
-  color: #bbb;
+  color: #DCDFE6;
   position: relative;
 }
 </style>

@@ -9,7 +9,7 @@
         <ul class="list-unstyled">
           <li>或者你可以去:</li>
           <li class="link-type">
-            <router-link to="/dashboard">回首页</router-link>
+            <router-link to="/home">回首页</router-link>
           </li>
         </ul>
       </el-col>
@@ -33,7 +33,7 @@ export default {
   methods: {
     back() {
       if (this.$route.query.noGoBack) {
-        this.$router.push({ path: '/dashboard' })
+        this.$router.push({ path: '/home' })
       } else {
         this.$router.go(-1)
       }

@@ -1,0 +1,78 @@
+@font-face {
+	font-family: "iconfont-st";
+	src: url('iconfont-st.eot');
+	src: url('iconfont-st.eot?#iefix') format('eot'),
+		url('iconfont-st.woff2') format('woff2'),
+		url('iconfont-st.woff') format('woff'),
+		url('iconfont-st.ttf') format('truetype'),
+		url('iconfont-st.svg#iconfont-st') format('svg');
+}
+
+.st-icon:before {
+	font-family: "iconfont-st";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	/* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
+	text-decoration: none;
+	text-transform: none;
+}
+
+
+.st-icon-bmgl:before {
+	content: "\E001";
+}
+
+.st-icon-dev:before {
+	content: "\E002";
+}
+
+.st-icon-disable:before {
+	content: "\E003";
+}
+
+.st-icon-fullscreen:before {
+	content: "\E004";
+}
+
+.st-icon-jsgl:before {
+	content: "\E005";
+}
+
+.st-icon-logout:before {
+	content: "\E006";
+}
+
+.st-icon-platform:before {
+	content: "\E007";
+}
+
+.st-icon-resetPassword:before {
+	content: "\E008";
+}
+
+.st-icon-rzgl:before {
+	content: "\E009";
+}
+
+.st-icon-sjck:before {
+	content: "\E00A";
+}
+
+.st-icon-sjdp:before {
+	content: "\E00B";
+}
+
+.st-icon-yhgl:before {
+	content: "\E00C";
+}
+
+.st-icon-yhzx:before {
+	content: "\E00D";
+}
+
+.st-icon-yxpt:before {
+	content: "\E00E";
+}

@@ -6,7 +6,7 @@ export default {
   },
   mounted() {
     // In order to fix the click on menu on the ios device will trigger the mouseeleave bug
-    // https://github.com/PanJiaChen/tui-console/issues/1135
+    // https://github.com/PanJiaChen/vue-admin-cli/issues/1135
     this.fixBugIniOS()
   },
   methods: {
