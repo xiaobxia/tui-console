@@ -63,7 +63,7 @@ const router = [
             component: () => import('@/views/userCenter/depList'),
             name: 'UserCenterDepList',
             meta: {
-              title: '部门管理',
+              title: '产品管理',
               noCache: true,
               icon: 'st-icon-bmgl'
             }

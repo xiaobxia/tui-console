@@ -32,6 +32,13 @@ Vue.use(ElementUI, {
 
 Vue.use(Clipboard)
 
+Vue.directive('highlight', function(el) {
+  const blocks = el.querySelectorAll('pre code')
+  blocks.forEach((block) => {
+    window.hljs.highlightBlock(block)
+  })
+})
+
 // HTTP工具
 Vue.prototype.$http = Http
 

@@ -24,11 +24,10 @@
       </div>
       <div class="right-block">
         <el-button
-          v-if="$hasPerm('010301')"
           size="small"
           type="primary"
           @click="openEditDialog"
-        >添加部门
+        >添加产品
         </el-button>
       </div>
     </div>
@@ -44,49 +43,31 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column align="center" label="排序值">
-        <template slot-scope="scope">
-          <span>{{ scope.row.sortIndex || 0 }}</span>
+        <template slot-scope="{row}">
+          <span>{{ row.sort || 0 }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="名称">
-        <template slot-scope="scope">
-          <span>{{ scope.row.name || '-' }}</span>
+        <template slot-scope="{row}">
+          <span>{{ row.name || '-' }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="图标">
-        <template slot-scope="scope">
-          <img v-if="scope.row.icon_url" :src="scope.row.icon_url" class="list-img-icon" alt="">
+        <template slot-scope="{row}">
+          <img v-if="row.icon_url" :src="row.icon_url" class="list-img-icon" alt="">
           <span v-else>-</span>
         </template>
       </el-table-column>
-      <!--<el-table-column align="center" label="是否推荐">-->
-      <!--<template slot-scope="scope">-->
-      <!--<span>{{ formatShiFou(scope.row.is_recommend) }}</span>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column align="center" label="添加时间" width="200">-->
-      <!--<template slot-scope="scope">-->
-      <!--<span>{{ formatDateTime(scope.row.create_at) }}</span>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column align="center" label="状态">-->
-      <!--<template slot-scope="scope">-->
-      <!--<el-tag :type="formatStatusType(scope.row.status)">{{ formatStatus(scope.row.status) }}</el-tag>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
       <el-table-column
-        v-if="$hasPerm('010303') || $hasPerm('010302')"
         align="left"
         label="操作"
       >
         <template slot-scope="{row}">
           <el-button
-            v-if="$hasPerm('010303')"
             type="text"
             @click="openEditDialog(row)"
           >编辑</el-button>
           <el-button
-            v-if="$hasPerm('010302')"
             type="text"
             @click="deleteRow(row)"
           >删除</el-button>
@@ -217,7 +198,8 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.left-block {
-  line-height: 32px;
+.list-img-icon {
+  height: 60px;
+  width: 60px;
 }
 </style>

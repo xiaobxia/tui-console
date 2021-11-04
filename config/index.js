@@ -72,9 +72,9 @@ module.exports = {
     // 解决打包时font的问题
     assetsPathInCss: '../../',
     // assetsPublicPath: './',
-    assetsPublicPath: './',
+    assetsPublicPath: '/doc/',
     cdnPublicPath: 'http://tuiconsolecdn.xiaobxia.com/',
-    ifCdn: true,
+    ifCdn: false,
 
     /**
      * Source Maps

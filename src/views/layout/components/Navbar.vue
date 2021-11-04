@@ -81,10 +81,8 @@ export default {
     },
     userChange(command) {
       if (command === 'out') {
-        this.$http.post('dataCenter/userLogin/logout').then((res) => {
-          authUtil.removeUser()
-          window.location.reload()
-        })
+        authUtil.removeUser()
+        window.location.reload()
       } else if (command === 'fullPage') {
         screenfull.toggle().then(() => {
           this.isFullscreen = screenfull.isFullscreen

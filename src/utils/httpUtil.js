@@ -86,6 +86,19 @@ const Http = {
       .get(makeUrl(url + (queryString ? '?' + queryString : '')), options)
       .then(data => data.data)
   },
+  getRaw(url, query, options) {
+    let queryString = ''
+    if (query) {
+      query.uuId = new Date().getTime()
+    } else {
+      query = {
+        uuId: new Date().getTime()
+      }
+    }
+    queryString = qs.stringify(deepClone(query))
+    return axios
+      .get(makeUrl(url + (queryString ? '?' + queryString : '')), options)
+  },
   post(url, param, options) {
     return (
       axios
