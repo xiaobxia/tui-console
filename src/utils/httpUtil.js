@@ -4,11 +4,11 @@ import { Message } from 'element-ui'
 import urlUtil from './urlUtil'
 import authUtil from '@/utils/authUtil'
 
-let basePath = '/'
+let basePath = `${window.BASE_PATH}`
 
 // 默认连接地址，只在调试时有用
 if (process.env.NODE_ENV === 'development') {
-  basePath = `/${urlUtil.getQueryStringArgs('pt') || 'localhost'}/`
+  basePath = `/${urlUtil.getQueryStringArgs('pt') || 'localhost'}${window.BASE_PATH}`
 }
 
 axios.interceptors.request.use(

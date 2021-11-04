@@ -1,5 +1,7 @@
 <template>
-  <div v-if="item" class="c-c">
+  <div v-if="item && init" class="c-c">
+    <div style="margin-bottom: 15px">请求方法：{{ item.method }}</div>
+    <div style="margin-bottom: 15px">请求路径：{{ cPath(item.path) }}</div>
     <div>参数示例</div>
     <div>
       <pre v-highlight><code class="lang-javascript">{{ item.example }}</code></pre>
@@ -62,7 +64,8 @@ export default {
   },
   data() {
     return {
-      item: null
+      item: null,
+      init: false
     }
   },
   watch: {
@@ -72,11 +75,27 @@ export default {
       } else {
         this.item = null
       }
+      this.reInit()
     }
   },
+  created() {
+    this.reInit()
+  },
   methods: {
+    reInit() {
+      this.init = false
+      this.$nextTick(() => {
+        this.init = true
+      })
+    },
     initItem() {
       this.item = getItem(this.list, this.select)
+    },
+    cPath(path) {
+      if (path.startsWith('/')) {
+        path = path.substring(1)
+      }
+      return window.BASE_PATH + path
     }
   }
 }

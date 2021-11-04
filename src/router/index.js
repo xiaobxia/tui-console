@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import userCenterRouter from './modules/userCenter'
+// import userCenterRouter from './modules/userCenter'
 
 /* Layout */
 import Layout from '@/views/layout/Layout'
@@ -20,28 +20,28 @@ export const constantRouterMap = [
       }
     ]
   },
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true,
-    meta: {
-      auth: false
-    }
-  },
-  {
-    path: '/home',
-    component: () => import('@/views/home/index'),
-    hidden: true,
-    meta: {
-      auth: true
-    }
-  },
+  // {
+  //   path: '/login',
+  //   component: () => import('@/views/login/index'),
+  //   hidden: true,
+  //   meta: {
+  //     auth: false
+  //   }
+  // },
+  // {
+  //   path: '/home',
+  //   component: () => import('@/views/home/index'),
+  //   hidden: true,
+  //   meta: {
+  //     auth: true
+  //   }
+  // },
   {
     path: '/entry',
     component: () => import('@/views/entry/index'),
     hidden: true,
     meta: {
-      auth: true
+      auth: false
     }
   },
   {
@@ -57,16 +57,16 @@ export const constantRouterMap = [
     component: () => import('@/views/errorPage/404'),
     hidden: true
   },
-  {
-    path: '/401',
-    component: () => import('@/views/errorPage/401'),
-    hidden: true
-  },
+  // {
+  //   path: '/401',
+  //   component: () => import('@/views/errorPage/401'),
+  //   hidden: true
+  // },
   {
     path: '',
     component: Layout,
     // 默认去账本列表
-    redirect: 'userCenter/userList/index'
+    redirect: 'entry'
   }
 ]
 
@@ -74,7 +74,7 @@ export const asyncRouterMapWithRoles = [
 ]
 
 export const asyncRouterMap = [
-  ...userCenterRouter,
+  // ...userCenterRouter,
   { path: '*', redirect: '/404', hidden: true }
 ]
 
