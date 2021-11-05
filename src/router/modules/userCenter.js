@@ -52,7 +52,7 @@ const router = [
         ]
       },
       {
-        path: 'depList',
+        path: 'productList',
         component: TempRouter,
         meta: {
           menu: '0103'
@@ -60,8 +60,8 @@ const router = [
         children: [
           {
             path: 'index',
-            component: () => import('@/views/userCenter/depList'),
-            name: 'UserCenterDepList',
+            component: () => import('@/views/userCenter/productList'),
+            name: 'UserCenterProductList',
             meta: {
               title: '产品管理',
               noCache: true,

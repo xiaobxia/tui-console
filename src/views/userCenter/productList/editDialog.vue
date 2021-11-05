@@ -184,26 +184,14 @@
 
 <script>
 import uuid from 'uuid/v1'
-function createForm(tar) {
-  let raw = {
-    'name': '',
-    'deptDesc': '',
-    'deptName': '',
-    'id': '',
-    'parentId': ''
-  }
-  if (tar) {
-    raw = Object.assign(raw, tar)
-  }
-  return raw
-}
+import { createProductEditForm } from '@/common/models/product'
 
 export default {
   name: 'EditDialog',
   data() {
     return {
       dialogVisible: false,
-      form: createForm(),
+      form: createProductEditForm(),
       rules: {
         url: [{ required: true, message: '请输入链接', trigger: 'blur' }],
         name: [{ required: true, message: '请输入产品名称', trigger: 'blur' }],
@@ -251,7 +239,7 @@ export default {
       return isImage && isLt2M
     },
     open(row) {
-      this.form = createForm(row)
+      this.form = createProductEditForm(row)
       this.getQiniuToken()
       this.dialogVisible = true
     },
@@ -285,4 +273,33 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+  .avatar-uploader {
+    /deep/ {
+      .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .el-upload:hover {
+        border-color: #409EFF;
+      }
+    }
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>
