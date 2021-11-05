@@ -6,7 +6,10 @@
     <div>
       <pre v-highlight><code class="lang-javascript">{{ item.example }}</code></pre>
     </div>
-    <div>参数说明</div>
+    <div>
+      <span>参数说明</span>
+      <!--<el-button type="text" @click="openCodeDialog(item)">字段代码</el-button>-->
+    </div>
     <div>
       <el-table
         :data="item.paramList"
@@ -28,9 +31,11 @@
         </el-table-column>
       </el-table>
     </div>
+    <code-dialog ref="codeDialog"/>
   </div>
 </template>
 <script>
+import CodeDialog from './codeDialog'
 function getItem(list, select) {
   for (let i = 0; i < list.length; i++) {
     const v = list[i]
@@ -49,6 +54,7 @@ function getItem(list, select) {
 }
 export default {
   components: {
+    CodeDialog
   },
   props: {
     list: {
@@ -96,6 +102,9 @@ export default {
         path = path.substring(1)
       }
       return window.BASE_PATH + path
+    },
+    openCodeDialog(item) {
+      this.$refs.codeDialog.open(item)
     }
   }
 }

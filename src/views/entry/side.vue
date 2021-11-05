@@ -75,6 +75,11 @@ export default {
       width: 200px;
       height: 100%;
       background-color: #fff;
+      /deep/ {
+        .el-menu {
+          height: 100%;
+        }
+      }
     }
     .c-w {
       width: 100%;
