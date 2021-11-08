@@ -24,7 +24,8 @@ export function createProductEditForm(tar) {
     'endTime': '',
     'sort': '',
     'introduction': '',
-    'platform': '',
+    'exclude_platform': [],
+    'exclude_channel': [],
     'type': '',
     timeRange: [
       '00:00:00',
