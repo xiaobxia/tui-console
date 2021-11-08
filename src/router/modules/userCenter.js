@@ -81,6 +81,23 @@ const router = [
         ]
       },
       {
+        path: 'channelPlatformList',
+        component: TempRouter,
+        meta: {},
+        children: [
+          {
+            path: 'index',
+            component: () => import('@/views/userCenter/channelPlatformList'),
+            name: 'UserCenterChannelPlatformList',
+            meta: {
+              title: '渠道平台',
+              noCache: true,
+              icon: 'st-icon-yhgl'
+            }
+          }
+        ]
+      },
+      {
         path: 'productList',
         component: TempRouter,
         meta: {},

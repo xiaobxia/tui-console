@@ -109,18 +109,34 @@
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item prop="platform" label="上架平台">
+            <el-form-item prop="exclude_platform" label="排除平台">
               <el-select
-                v-model="form.platform"
+                v-model="form.exclude_platform"
                 multiple
                 collapse-tags
                 style="width: 100%"
                 placeholder="请选择">
                 <el-option
                   v-for="item in platformList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"/>
+                  :key="item._id"
+                  :label="item.name"
+                  :value="item._id"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="exclude_channel" label="排除渠道">
+              <el-select
+                v-model="form.exclude_channel"
+                multiple
+                collapse-tags
+                style="width: 100%"
+                placeholder="请选择">
+                <el-option
+                  v-for="item in channelList"
+                  :key="item._id"
+                  :label="item.name"
+                  :value="item._id"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -220,13 +236,13 @@
 import uuid from 'uuid/v1'
 import setting from '@/setting'
 import { createProductEditForm } from '@/common/models/product'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditDialog',
   data() {
     return {
       dialogVisible: false,
-      platformList: [],
       form: createProductEditForm(),
       rules: {
         url: [{ required: true, message: '请输入链接', trigger: 'blur' }],
@@ -248,7 +264,11 @@ export default {
   computed: {
     dialogTitle() {
       return this.form.id ? '编辑产品' : '添加产品'
-    }
+    },
+    ...mapGetters([
+      'platformList',
+      'channelList'
+    ])
   },
   created() {
   },

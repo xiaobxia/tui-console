@@ -12,6 +12,8 @@ const getters = {
   menuKeyMap: state => state.permission.menuKeyMap,
   ifAddRouters: state => state.permission.ifAdd,
   // 公共
-  rulesList: state => state.common.rulesList
+  platformList: state => state.common.platformList,
+  channelList: state => state.common.channelList,
+  productList: state => state.common.productList
 }
 export default getters

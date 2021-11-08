@@ -57,10 +57,6 @@
         label="渠道名称"
       />
       <el-table-column
-        prop="url"
-        label="渠道链接"
-      />
-      <el-table-column
         prop="create_at"
         label="创建时间"
       >

@@ -196,7 +196,7 @@ export default {
         const params = {
           _ids: deleteIds
         }
-        this.$http.post('dataCenter/dept/delete', params).then(() => {
+        this.$http.post('tuiServer/admin/crontab/deleteCrontab', params).then(() => {
           this.$message({
             type: 'success',
             message: '操作成功！'
