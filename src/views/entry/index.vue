@@ -43,6 +43,9 @@ function format(list) {
             required: required.indexOf(key) !== -1
           })
           example[key] = ''
+          if (item.type === 'array') {
+            example[key] = []
+          }
         }
         v.paramList = paramList
         v.example = JSON.stringify(example, null, 4)
