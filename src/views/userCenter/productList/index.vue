@@ -34,6 +34,11 @@
           @click="openEditDialog(null)"
         >添加产品
         </el-button>
+        <el-button
+          size="small"
+          type="primary"
+          @click="exportHandler"
+        >导出</el-button>
       </div>
     </div>
     <el-table
@@ -215,6 +220,11 @@ export default {
           })
           this.reQueryList()
         })
+      })
+    },
+    exportHandler() {
+      this.$http.get('tuiServer/testXlsx', {}, { responseType: 'arraybuffer' }).then((res) => {
+        this.$downloadExcel(res, '普通用户', 'xlsx')
       })
     }
   }
