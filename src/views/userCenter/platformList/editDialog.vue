@@ -8,29 +8,24 @@
   >
     <div v-if="dialogVisible">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
-        <el-form-item label="权限编码：" prop="permUrl">
+        <el-form-item label="平台编码：" prop="code">
           <el-input
-            v-model="form.permUrl"
-            :maxlength="2"
-            placeholder="请输入权限编码"
-            @input="$inputFilterNumberText(form, 'permUrl')"
-          >
-            <template v-if="form.parentCode" slot="prepend">{{ form.parentCode }}</template>
-          </el-input>
+            v-model="form.code"
+            :maxlength="20"
+            placeholder="请输入平台编码"
+          />
         </el-form-item>
-        <el-form-item label="权限名称：" prop="permName">
-          <el-input v-model="form.permName" :maxlength="20" placeholder="请输入权限名称"/>
+        <el-form-item label="平台名称：" prop="name">
+          <el-input v-model="form.name" :maxlength="20" placeholder="请输入平台名称"/>
         </el-form-item>
-        <el-form-item label="类型：" prop="permType">
-          <el-radio-group v-model="form.permType">
-            <el-radio :label="1">目录</el-radio>
-            <el-radio :label="2">菜单</el-radio>
-            <el-radio :label="3">按钮</el-radio>
-            <el-radio :label="4">数据查看</el-radio>
+        <el-form-item label="平台链接：" prop="url">
+          <el-input v-model="form.url" :maxlength="60" placeholder="请输入平台链接"/>
+        </el-form-item>
+        <el-form-item label="状态：" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="2">停用</el-radio>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="排序：" prop="sort">
-          <el-input-number v-model="form.sort" :min="0" style="width: 100%"/>
         </el-form-item>
       </el-form>
     </div>
@@ -44,17 +39,10 @@
 <script>
 function createForm(tar) {
   let raw = {
-    'parentCode': '',
-    'icon': '',
-    'id': '',
-    'moduleName': '',
-    'parentId': '',
-    'path': '',
-    'permHrefUrl': '',
-    'permName': '',
-    'permType': 1,
-    'permUrl': '',
-    'sort': 0
+    'code': '',
+    'name': '',
+    'url': '',
+    'status': 1
   }
   if (tar) {
     raw = Object.assign(raw, tar)
@@ -69,13 +57,10 @@ export default {
       dialogVisible: false,
       form: createForm(),
       rules: {
-        permUrl: [
+        code: [
           { required: true, message: '必填', trigger: 'blur' }
         ],
-        permName: [
-          { required: true, message: '必填', trigger: 'blur' }
-        ],
-        permType: [
+        name: [
           { required: true, message: '必填', trigger: 'blur' }
         ]
       },
@@ -85,7 +70,7 @@ export default {
   },
   computed: {
     dialogTitle() {
-      return this.form.id ? '编辑权限' : '添加权限'
+      return this.form.id ? '编辑平台' : '添加平台'
     }
   },
   created() {
@@ -99,19 +84,13 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
-          let url = 'dataCenter/perm/add'
-          if (this.form.id) {
-            url = 'dataCenter/perm/edit'
+          let url = 'tuiServer/admin/platform/addPlatform'
+          if (this.form._id) {
+            url = 'tuiServer/admin/platform/editPlatform'
           }
           this.$http.post(url, {
-            ...this.form,
-            permUrl: this.form.parentCode + this.form.permUrl,
-            moduleName: this.form.moduleName || this.form.permUrl
+            ...this.form
           }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '操作成功！'
-            })
             this.dialogVisible = false
             this.$emit('ok')
             this.loading = false

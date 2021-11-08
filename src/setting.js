@@ -6,5 +6,9 @@ export default {
   // isDev: false,
   isDev: !!urlUtil.getQueryStringArgs('isDev') || process.env.NODE_ENV === 'development',
   // 是否开启权限
-  permission: false
+  permission: false,
+  // 七牛云上传储存区域的上传域名
+  upload_qiniu_url: 'http://up-z0.qiniup.com',
+  // 七牛云返回储存图片的子域名
+  upload_qiniu_addr: 'http://tuiinfo.xiaobxia.com/'
 }

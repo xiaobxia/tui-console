@@ -25,10 +25,15 @@ export function createProductEditForm(tar) {
     'sort': '',
     'introduction': '',
     'platform': '',
-    'type': ''
+    'type': '',
+    timeRange: [
+      '00:00:00',
+      '23:59:59'
+    ]
   }
   if (tar) {
     raw = Object.assign(raw, tar)
+    raw.timeRange = [raw.startTime || '00:00:00', raw.endTime || '23:59:59']
   }
   return raw
 }

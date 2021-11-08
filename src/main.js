@@ -22,6 +22,7 @@ import inputFilter from '@/common/inputFilter'
 import dataFormat from '@/common/dataFormat'
 import userPerm from '@/common/userPerm'
 import sysSetting from '@/setting'
+import moment from 'moment'
 
 // 指令部分
 import Clipboard from '@/directive/clipboard'
@@ -79,6 +80,10 @@ Vue.prototype.$oLog = function(content, detail) {
     content: content || '',
     detail: detail || ''
   })
+}
+
+Vue.prototype.$formatDateTime = function(str) {
+  return moment(str).format('YYYY-MM-DD HH:mm:ss')
 }
 
 // 全局数据

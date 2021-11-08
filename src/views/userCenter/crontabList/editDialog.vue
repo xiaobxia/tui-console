@@ -8,14 +8,24 @@
   >
     <div v-if="dialogVisible">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
-        <el-form-item label="手机号：" prop="phone">
-          <el-input v-model="form.phone" :maxlength="20" placeholder="请输入"/>
+        <el-form-item label="任务编码：" prop="code">
+          <el-input
+            v-model="form.code"
+            :maxlength="20"
+            placeholder="请输入任务编码"
+          />
         </el-form-item>
-        <el-form-item label="名称：" prop="name">
-          <el-input v-model="form.name" :maxlength="20" placeholder="请输入"/>
+        <el-form-item label="任务名称：" prop="name">
+          <el-input v-model="form.name" :maxlength="20" placeholder="请输入任务名称"/>
         </el-form-item>
-        <el-form-item label="密码：" prop="password">
-          <el-input v-model="form.password" :maxlength="20" placeholder="请输入"/>
+        <el-form-item label="任务说明：" prop="describe">
+          <el-input
+            :rows="4"
+            v-model="form.describe"
+            :maxlength="200"
+            type="textarea"
+            placeholder="请输入任务说明"
+          />
         </el-form-item>
         <el-form-item label="状态：" prop="status">
           <el-radio-group v-model="form.status">
@@ -35,15 +45,10 @@
 <script>
 function createForm(tar) {
   let raw = {
+    'code': '',
     'name': '',
-    'phone': '',
-    'source_channel_id': '',
-    'password': '',
-    'token': '',
-    'is_login': '',
-    'type': 1,
-    'status': 1,
-    'roles': ''
+    'describe': '',
+    'status': 1
   }
   if (tar) {
     raw = Object.assign(raw, tar)
@@ -58,7 +63,7 @@ export default {
       dialogVisible: false,
       form: createForm(),
       rules: {
-        phone: [
+        code: [
           { required: true, message: '必填', trigger: 'blur' }
         ],
         name: [
@@ -71,7 +76,7 @@ export default {
   },
   computed: {
     dialogTitle() {
-      return this.form.id ? '编辑用户' : '添加用户'
+      return this.form.id ? '编辑任务' : '添加任务'
     }
   },
   created() {
@@ -85,17 +90,13 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
-          let url = 'tuiServer/admin/user/addUser'
+          let url = 'tuiServer/admin/crontab/addCrontab'
           if (this.form._id) {
-            url = 'tuiServer/admin/user/editUser'
+            url = 'tuiServer/admin/crontab/editCrontab'
           }
           this.$http.post(url, {
             ...this.form
           }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '操作成功！'
-            })
             this.dialogVisible = false
             this.$emit('ok')
             this.loading = false

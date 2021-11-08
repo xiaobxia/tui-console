@@ -31,7 +31,7 @@
         <el-button
           size="small"
           type="primary"
-          @click="openEditDialog"
+          @click="openEditDialog(null)"
         >添加产品
         </el-button>
       </div>
@@ -47,20 +47,46 @@
       style="width: 100%"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column align="center" label="排序值">
+      <el-table-column width="100" prop="sort" label="排序值"/>
+      <el-table-column prop="name" label="名称"/>
+      <el-table-column label="图标">
         <template slot-scope="{row}">
-          <span>{{ row.sort || 0 }}</span>
+          <el-image
+            :src="row.icon_url"
+            style="width: 60px; height: 60px"
+            fit="fill"/>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="名称">
+      <el-table-column label="类型">
         <template slot-scope="{row}">
-          <span>{{ row.name || '-' }}</span>
+          <span>{{ $PRODUCT_TYPE_FORMAT(row.type) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="图标">
+      <el-table-column label="活动">
         <template slot-scope="{row}">
-          <img v-if="row.icon_url" :src="row.icon_url" class="list-img-icon" alt="">
-          <span v-else>-</span>
+          <el-tag v-if="row.is_activity === true" type="success">是</el-tag>
+          <el-tag v-else type="info">否</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="推荐">
+        <template slot-scope="{row}">
+          <el-tag v-if="row.is_recommend === true" type="success">是</el-tag>
+          <el-tag v-else type="info">否</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="轮播">
+        <template slot-scope="{row}">
+          <el-tag v-if="row.is_rotation === true" type="success">是</el-tag>
+          <el-tag v-else type="info">否</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        label="状态"
+      >
+        <template slot-scope="{row}">
+          <el-tag v-if="row.status === 1" type="success">已上架</el-tag>
+          <el-tag v-else type="danger">已下架</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -168,7 +194,7 @@ export default {
       this.$refs.editDialog.open(row)
     },
     deleteRow(row) {
-      this.deleteHandler([row.id])
+      this.deleteHandler([row._id])
     },
     deleteHandler(deleteIds) {
       this.$confirm('一旦删除，将不可恢复，是否确定删除?', '提示', {
@@ -178,17 +204,9 @@ export default {
         showClose: false
       }).then(() => {
         const params = {
-          ids: deleteIds
+          _ids: deleteIds
         }
-        this.$http.post('dataCenter/dept/delete', params).then(() => {
-          this.$oLog(
-            '删除部门',
-            `部门名：${this.tableData.filter((v) => {
-              return deleteIds.indexOf(v.id) !== -1
-            }).map((v) => {
-              return v.deptName
-            }).join('，')}`
-          )
+        this.$http.post('tuiServer/admin/product/deleteProduct', params).then(() => {
           this.$message({
             type: 'success',
             message: '操作成功！'

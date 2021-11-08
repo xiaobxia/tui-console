@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import md5 from 'md5'
+
 export default {
   name: 'Login',
   data() {
@@ -107,7 +107,7 @@ export default {
     getParams() {
       return {
         username: this.loginForm.username,
-        password: md5(this.loginForm.password)
+        password: this.loginForm.password
       }
     },
     // 登录

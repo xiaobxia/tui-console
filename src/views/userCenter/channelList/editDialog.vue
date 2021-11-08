@@ -8,29 +8,15 @@
   >
     <div v-if="dialogVisible">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
-        <!--<el-form-item label="角色编码：" prop="code">-->
-        <!--<el-input-->
-        <!--v-model="form.code"-->
-        <!--:maxlength="20"-->
-        <!--@input="$inputFilterNumberText(form, 'code')"-->
-        <!--/>-->
-        <!--</el-form-item>-->
-        <el-form-item label="角色名称：" prop="name">
-          <el-input v-model="form.name" :maxlength="20"/>
+        <el-form-item label="渠道编码：" prop="code">
+          <el-input
+            v-model="form.code"
+            :maxlength="20"
+            placeholder="请输入渠道编码"
+          />
         </el-form-item>
-        <el-form-item label="部门：" prop="deptId">
-          <el-select
-            v-model="form.deptId"
-            style="width: 100%"
-            size="small"
-          >
-            <el-option
-              v-for="item of deptList"
-              :key="item.id"
-              :value="item.id"
-              :label="item.deptName"
-            />
-          </el-select>
+        <el-form-item label="渠道名称：" prop="name">
+          <el-input v-model="form.name" :maxlength="20" placeholder="请输入渠道名称"/>
         </el-form-item>
         <el-form-item label="状态：" prop="status">
           <el-radio-group v-model="form.status">
@@ -51,8 +37,6 @@
 function createForm(tar) {
   let raw = {
     'code': '',
-    'deptId': '',
-    'id': '',
     'name': '',
     'status': 1
   }
@@ -63,7 +47,7 @@ function createForm(tar) {
 }
 
 export default {
-  name: 'EditRulesDialog',
+  name: 'EditDialog',
   data() {
     return {
       dialogVisible: false,
@@ -74,19 +58,15 @@ export default {
         ],
         name: [
           { required: true, message: '必填', trigger: 'blur' }
-        ],
-        deptId: [
-          { required: true, message: '必填', trigger: 'change' }
         ]
       },
       loading: false,
-      source: '',
-      deptList: []
+      source: ''
     }
   },
   computed: {
     dialogTitle() {
-      return this.form.id ? '编辑角色' : '添加角色'
+      return this.form.id ? '编辑渠道' : '添加渠道'
     }
   },
   created() {
@@ -94,37 +74,19 @@ export default {
   methods: {
     open(row) {
       this.form = createForm(row)
-      this.queryDeptList()
       this.dialogVisible = true
-    },
-    queryDeptList() {
-      this.$http.get('dataCenter/dept/findAllPageByCondition', {
-        pageIndex: 1,
-        pageSize: 9999
-      }).then((res) => {
-        const data = res.data || {}
-        this.deptList = data.records || []
-      })
     },
     okHandler() {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
-          let url = 'dataCenter/role/add'
-          if (this.form.id) {
-            url = 'dataCenter/role/edit'
+          let url = 'tuiServer/admin/channel/addChannel'
+          if (this.form._id) {
+            url = 'tuiServer/admin/channel/editChannel'
           }
           this.$http.post(url, {
             ...this.form
           }).then(() => {
-            this.$oLog(
-              this.dialogTitle,
-              `角色名：${this.form.name}`
-            )
-            this.$message({
-              type: 'success',
-              message: '操作成功！'
-            })
             this.dialogVisible = false
             this.$emit('ok')
             this.loading = false

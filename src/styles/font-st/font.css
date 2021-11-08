@@ -49,30 +49,34 @@
 	content: "\E007";
 }
 
-.st-icon-resetPassword:before {
+.st-icon-product:before {
 	content: "\E008";
 }
 
-.st-icon-rzgl:before {
+.st-icon-resetPassword:before {
 	content: "\E009";
 }
 
-.st-icon-sjck:before {
+.st-icon-rzgl:before {
 	content: "\E00A";
 }
 
-.st-icon-sjdp:before {
+.st-icon-sjck:before {
 	content: "\E00B";
 }
 
-.st-icon-yhgl:before {
+.st-icon-sjdp:before {
 	content: "\E00C";
 }
 
-.st-icon-yhzx:before {
+.st-icon-yhgl:before {
 	content: "\E00D";
 }
 
-.st-icon-yxpt:before {
+.st-icon-yhzx:before {
 	content: "\E00E";
+}
+
+.st-icon-yxpt:before {
+	content: "\E00F";
 }

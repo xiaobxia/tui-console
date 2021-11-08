@@ -9,16 +9,13 @@ const router = [
     component: Layout,
     meta: {
       title: '用户中心',
-      noCache: true,
-      menu: '01'
+      noCache: true
     },
     children: [
       {
         path: 'userList',
         component: TempRouter,
-        meta: {
-          menu: '0101'
-        },
+        meta: {},
         children: [
           {
             path: 'index',
@@ -33,20 +30,52 @@ const router = [
         ]
       },
       {
-        path: 'rulesList',
+        path: 'crontabList',
         component: TempRouter,
-        meta: {
-          menu: '0102'
-        },
+        meta: {},
         children: [
           {
             path: 'index',
-            component: () => import('@/views/userCenter/rulesList'),
-            name: 'UserCenterRulesList',
+            component: () => import('@/views/userCenter/crontabList'),
+            name: 'UserCenterCrontabList',
             meta: {
-              title: '角色管理',
+              title: '定时任务',
               noCache: true,
-              icon: 'st-icon-jsgl'
+              icon: 'st-icon-yhgl'
+            }
+          }
+        ]
+      },
+      {
+        path: 'platformList',
+        component: TempRouter,
+        meta: {},
+        children: [
+          {
+            path: 'index',
+            component: () => import('@/views/userCenter/platformList'),
+            name: 'UserCenterPlatformList',
+            meta: {
+              title: '平台管理',
+              noCache: true,
+              icon: 'st-icon-yhgl'
+            }
+          }
+        ]
+      },
+      {
+        path: 'channelList',
+        component: TempRouter,
+        meta: {},
+        children: [
+          {
+            path: 'index',
+            component: () => import('@/views/userCenter/channelList'),
+            name: 'UserCenterChannelList',
+            meta: {
+              title: '渠道管理',
+              noCache: true,
+              icon: 'st-icon-yhgl'
             }
           }
         ]
@@ -54,9 +83,7 @@ const router = [
       {
         path: 'productList',
         component: TempRouter,
-        meta: {
-          menu: '0103'
-        },
+        meta: {},
         children: [
           {
             path: 'index',
@@ -65,26 +92,7 @@ const router = [
             meta: {
               title: '产品管理',
               noCache: true,
-              icon: 'st-icon-bmgl'
-            }
-          }
-        ]
-      },
-      {
-        path: 'logList',
-        component: TempRouter,
-        meta: {
-          menu: '0104'
-        },
-        children: [
-          {
-            path: 'index',
-            component: () => import('@/views/userCenter/logList'),
-            name: 'UserCenterLogList',
-            meta: {
-              title: '日志管理',
-              noCache: true,
-              icon: 'st-icon-rzgl'
+              icon: 'st-icon-product'
             }
           }
         ]

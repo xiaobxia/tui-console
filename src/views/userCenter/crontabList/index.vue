@@ -2,6 +2,11 @@
   <div class="container-card">
     <div class="filter-container">
       <div class="left-block">
+        <span class="label-text">状态</span>
+        <el-select v-model="searchForm.status" clearable style="width: 160px" size="small">
+          <el-option :value="1" label="已上架"/>
+          <el-option :value="2" label="已下架"/>
+        </el-select>
         <el-input
           v-model="searchForm.searchKey"
           style="width: 160px"
@@ -24,10 +29,11 @@
       </div>
       <div class="right-block">
         <el-button
+          v-if="$hasPerm('010301')"
           size="small"
           type="primary"
           @click="openEditDialog"
-        >添加产品
+        >添加任务
         </el-button>
       </div>
     </div>
@@ -42,20 +48,33 @@
       style="width: 100%"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column align="center" label="排序值">
+      <el-table-column
+        prop="code"
+        label="任务编码"
+      />
+      <el-table-column
+        prop="name"
+        label="任务名称"
+      />
+      <el-table-column
+        prop="describe"
+        label="任务说明"
+      />
+      <el-table-column
+        prop="create_at"
+        label="创建时间"
+      >
         <template slot-scope="{row}">
-          <span>{{ row.sort || 0 }}</span>
+          <span>{{ $formatDateTime(row.create_at) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="名称">
+      <el-table-column
+        prop="status"
+        label="状态"
+      >
         <template slot-scope="{row}">
-          <span>{{ row.name || '-' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="图标">
-        <template slot-scope="{row}">
-          <img v-if="row.icon_url" :src="row.icon_url" class="list-img-icon" alt="">
-          <span v-else>-</span>
+          <el-tag v-if="row.status === 1" type="success">开启</el-tag>
+          <el-tag v-else type="danger">关闭</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -93,7 +112,8 @@ import EditDialog from './editDialog'
 
 function createSearchForm(tar) {
   let raw = {
-    searchKey: ''
+    searchKey: '',
+    status: ''
   }
   if (tar) {
     raw = Object.assign(raw, tar)
@@ -102,7 +122,7 @@ function createSearchForm(tar) {
 }
 
 export default {
-  name: 'UserCenterDepList',
+  name: 'UserCenterCrontabList',
   components: {
     Pagination,
     EditDialog
@@ -152,7 +172,7 @@ export default {
       return data
     },
     queryList() {
-      this.$http.get('tuiServer/admin/product/getProductsByPage', {
+      this.$http.get('tuiServer/admin/crontab/getCrontabsByPage', {
         ...this.formatSearchForm()
       }).then((res) => {
         const data = res.data || {}
@@ -164,7 +184,7 @@ export default {
       this.$refs.editDialog.open(row)
     },
     deleteRow(row) {
-      this.deleteHandler([row.id])
+      this.deleteHandler([row._id])
     },
     deleteHandler(deleteIds) {
       this.$confirm('一旦删除，将不可恢复，是否确定删除?', '提示', {
@@ -174,17 +194,9 @@ export default {
         showClose: false
       }).then(() => {
         const params = {
-          ids: deleteIds
+          _ids: deleteIds
         }
         this.$http.post('dataCenter/dept/delete', params).then(() => {
-          this.$oLog(
-            '删除部门',
-            `部门名：${this.tableData.filter((v) => {
-              return deleteIds.indexOf(v.id) !== -1
-            }).map((v) => {
-              return v.deptName
-            }).join('，')}`
-          )
           this.$message({
             type: 'success',
             message: '操作成功！'
@@ -198,8 +210,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.list-img-icon {
-  height: 60px;
-  width: 60px;
+.left-block {
+  line-height: 32px;
 }
 </style>
