@@ -1,4 +1,6 @@
 const gulpfile = require('gulp')
+const fs = require('fs')
+const through2 = require('through2')
 const iconfont = require('gulp-iconfont')
 const iconfontCss = require('gulp-iconfont-css')
 
@@ -21,4 +23,22 @@ gulpfile.task('iconfont', function() {
   })).pipe(gulpfile.dest('./src/styles/font-st'))
 })
 
-gulpfile.task('default', gulpfile.series('iconfont'))
+const iconList = []
+gulpfile.task('iconfont-map', function() {
+  return gulpfile.src(svg).pipe(through2.obj(function(file, enc, cb) {
+    const pa = file.relative.split('\\')
+    const name = pa[pa.length - 1]
+    iconList.push(`st-icon-${name.replace('.svg', '')}`)
+    cb()
+  }))
+})
+
+gulpfile.task('default', gulpfile.series('iconfont', 'iconfont-map', function() {
+  const jsStr = JSON.stringify(iconList)
+  fs.writeFile('./src/views/doc/icon/iconList.js', `export default ${jsStr}`, function(err) {
+    if (err) {
+      return console.log(err)
+    }
+    console.log(`成功生成图标索引文件!（${iconList.length}个图标）`)
+  })
+}))
