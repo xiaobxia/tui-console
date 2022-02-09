@@ -8,7 +8,7 @@
           <template v-if="item.childList && item.childList.length > 0">
             <el-submenu :index="item.id" :key="item.id">
               <template slot="title">
-                <i class="el-icon-location"/>
+                <i class="el-icon-folder"/>
                 <span>{{ item.note }}</span>
               </template>
               <el-menu-item
@@ -20,7 +20,6 @@
           </template>
           <template v-else>
             <el-menu-item :index="item.id" :key="item.id">
-              <i class="el-icon-setting"/>
               <span slot="title">{{ item.note }}</span>
             </el-menu-item>
           </template>
@@ -75,6 +74,7 @@ export default {
       width: 200px;
       height: 100%;
       background-color: #fff;
+      overflow-y: auto;
       /deep/ {
         .el-menu {
           height: 100%;
