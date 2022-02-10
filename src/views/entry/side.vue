@@ -8,8 +8,11 @@
           <template v-if="item.childList && item.childList.length > 0">
             <el-submenu :index="item.id" :key="item.id">
               <template slot="title">
-                <i class="el-icon-folder"/>
-                <span>{{ item.note }}</span>
+                <div style="font-weight: bold">
+                  <i class="el-icon-folder" style="font-weight: bold"/>
+                  <i class="el-icon-folder-opened" style="font-weight: bold"/>
+                  <span>{{ item.note }}</span>
+                </div>
               </template>
               <el-menu-item
                 v-for="(subItem) in item.childList"
@@ -75,13 +78,30 @@ export default {
       height: 100%;
       background-color: #fff;
       overflow-y: auto;
+      overflow-x: hidden;
       /deep/ {
         .el-menu {
           height: 100%;
         }
+        .el-icon-folder {
+          display: inline-block;
+        }
+        .el-icon-folder-opened {
+          display: none;
+        }
+        .is-opened {
+          .el-icon-folder {
+            display: none;
+          }
+          .el-icon-folder-opened {
+            display: inline-block;
+          }
+        }
       }
     }
     .c-w {
+      flex: 1;
+      overflow-x: hidden;
       width: 100%;
       height: 100%;
       overflow-y: auto;

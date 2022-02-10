@@ -1,5 +1,6 @@
 <template>
   <div v-if="item && init" class="c-c">
+    <div style="margin-bottom: 15px">名称：{{ item.note }}</div>
     <div style="margin-bottom: 15px">请求方法：{{ item.method }}</div>
     <div style="margin-bottom: 15px">请求路径：{{ cPath(item.path) }}</div>
     <div>参数示例</div>
